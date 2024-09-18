@@ -5,14 +5,15 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
-const userRoute = require('./routes/user');
 const { localAuth } = require('./config/passportLogic');
 require('dotenv').config();
+
+// Import routes
+const userRoute = require('./routes/user');
 const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
-
-
+const indexRoutes = require('./routes/index');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -69,38 +70,13 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/', require('./routes/index'));
+app.use('/', indexRoutes);
 app.use('/users', userRoute);
-
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
-});
-
-app.get('/users', (req, res) => {
-    res.render('users');
-});
-
-app.get('/products', (req, res) => {
-    res.render('products');
-});
-
-app.get('/analytics', (req, res) => {
-    res.render('analytics');
-});
-
-app.get('/settings', (req, res) => {
-    res.render('settings');
-});
-
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 
-// Handle logout logic here (e.g., destroying session)
+// Handle logout logic here
 app.get('/logout', (req, res) => {
     req.logout((err) => {
         if (err) return next(err);
