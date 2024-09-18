@@ -1,4 +1,3 @@
-// sidebar-toggle.js
 const toggleButton = document.querySelector('.sidebar-toggle');
 const sidebar = document.querySelector('.sidebar');
 const mainContent = document.querySelector('.main-content');
