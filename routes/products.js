@@ -4,11 +4,15 @@ const router = express.Router();
 // In-memory storage for products (use database in real-world scenarios)
 let products = [];
 let productId = 1;
+// routes/products.js
 
-// GET route to fetch all products
 router.get('/', (req, res) => {
-    res.render('products', { products }); // Pass products to the EJS view
+    res.render('products', {
+        products,            // Passing the products array
+        activePage: 'products'  // Passing the activePage variable
+    });
 });
+
 
 // POST route to add a new product
 router.post('/add', (req, res) => {
