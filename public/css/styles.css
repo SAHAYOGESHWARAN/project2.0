@@ -80,13 +80,13 @@ body {
 /* Button to toggle sidebar */
 .sidebar-toggle {
     position: absolute;
-    top: 20px;
+    top: 10px;
     right: -25px;
     background-color: #007bff;
     border: none;
     color: white;
     padding: 10px;
-    border-radius: 50%;
+    border-radius: 30%;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
