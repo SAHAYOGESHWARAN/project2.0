@@ -4,22 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <!-- Correct static paths for CSS and FontAwesome -->
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Correct static path -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- FontAwesome CDN -->
 </head>
 <body>
-    <%- include('partials/sidebar') %>
+    <!-- Include sidebar partial -->
+    <%- include('partials/sidebar', { activePage: 'products' }) %>
+
     <div class="main-content">
         <h1>Products Management</h1>
+
+        <!-- Product Actions -->
         <div class="product-actions">
-            <form id="addProductForm">
+            <form id="addProductForm" method="POST" action="/products/add">
                 <h2>Add New Product</h2>
-                <input type="text" id="productName" placeholder="Product Name" required>
-                <input type="number" id="productPrice" placeholder="Price" required>
-                <input type="text" id="productCategory" placeholder="Category" required>
-                <button type="submit">Add Product</button>
+                <input type="text" id="productName" name="productName" placeholder="Product Name" required>
+                <input type="number" id="productPrice" name="productPrice" placeholder="Price" required>
+                <input type="text" id="productCategory" name="productCategory" placeholder="Category" required>
+                <button type="submit" class="submit-btn">Add Product</button>
             </form>
 
+            <!-- Product List -->
             <div class="product-list">
                 <h2>Product List</h2>
                 <table class="product-table">
@@ -39,7 +45,9 @@
             </div>
         </div>
     </div>
-    <script src="/js/sidebar-toggle.js"></script>
-    <script src="/js/products.js"></script> <!-- Link to additional JS for product management -->
+
+    <!-- Correct JS paths -->
+    <script src="/static/js/sidebar-toggle.js"></script>
+    <script src="/static/js/products.js"></script> <!-- Link to product management JS -->
 </body>
 </html>
