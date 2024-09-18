@@ -76,11 +76,9 @@ app.use('/admin', require('./routes/admin'));
 app.use('/docs', require('./routes/docs'));
 
 // Handle logout logic here (e.g., destroying session)
-app.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        res.redirect('/');
-    });
+app.get('/logout', (req, res, next) => {
+    req.logout(); // Correct usage of req.logout
+    res.redirect('/');
 });
 
 // Define error handler
