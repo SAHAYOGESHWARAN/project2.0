@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <!-- Correct paths for static assets -->
+    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Corrected static path -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- FontAwesome CDN -->
 </head>
 <body>
-    <%- include('partials/sidebar') %>
+    <!-- Include the sidebar with the activePage variable to highlight the active link -->
+    <%- include('partials/sidebar', { activePage: 'users' }) %>
+
     <div class="main-content">
         <h1>Users Management</h1>
+
         <div class="user-actions">
             <input type="text" id="search" placeholder="Search users..." class="search-bar">
             <button id="add-user-btn" class="add-user-btn">Add User</button>
@@ -22,13 +26,16 @@
             <form action="/users/add" method="POST">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
+
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
+
                 <label for="role">Role:</label>
                 <select id="role" name="role">
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                 </select>
+
                 <button type="submit" class="submit-btn">Add User</button>
                 <button type="button" id="cancel-btn" class="cancel-btn">Cancel</button>
             </form>
@@ -55,7 +62,9 @@
             <button class="next-btn">Next</button>
         </div>
     </div>
-    <script src="/js/sidebar-toggle.js"></script>
-    <script src="/js/users.js"></script> <!-- Link to additional JS for user management -->
+
+    <!-- Correct JS paths -->
+    <script src="/static/js/sidebar-toggle.js"></script>
+    <script src="/static/js/users.js"></script> <!-- Users management logic -->
 </body>
 </html>
