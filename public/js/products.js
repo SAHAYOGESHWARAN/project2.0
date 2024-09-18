@@ -1,57 +1,40 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const addProductForm = document.getElementById('addProductForm');
-    const productTableBody = document.getElementById('productTableBody');
+document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-    // Fetch and display products on page load
-    fetchProducts();
+    const productName = document.querySelector('input[name="productName"]').value;
+    const productPrice = document.querySelector('input[name="productPrice"]').value;
+    const productCategory = document.querySelector('input[name="productCategory"]').value;
 
-    addProductForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    try {
+        const response = await fetch('/products/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productName, productPrice, productCategory })
+        });
 
-        const name = document.getElementById('productName').value;
-        const price = document.getElementById('productPrice').value;
-        const category = document.getElementById('productCategory').value;
-
-        try {
-            await fetch('/products/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, price, category })
-            });
-            document.getElementById('addProductForm').reset();
-            fetchProducts(); // Refresh the product list
-        } catch (err) {
-            console.error('Error adding product:', err);
+        if (response.ok) {
+            const product = await response.json();
+            addProductToTable(product); // Function to add product dynamically to the table
         }
-    });
-
-    async function fetchProducts() {
-        try {
-            const response = await fetch('/products');
-            const products = await response.json();
-
-            productTableBody.innerHTML = products.map(product => `
-                <tr>
-                    <td>${product._id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.price}</td>
-                    <td>${product.category}</td>
-                    <td>
-                        <button onclick="deleteProduct('${product._id}')">Delete</button>
-                    </td>
-                </tr>
-            `).join('');
-        } catch (err) {
-            console.error('Error fetching products:', err);
-        }
+    } catch (error) {
+        console.error('Error adding product:', error);
     }
-
-    window.deleteProduct = async (id) => {
-        try {
-            await fetch(`/products/delete/${id}`, { method: 'DELETE' });
-            fetchProducts(); // Refresh the product list
-        } catch (err) {
-            console.error('Error deleting product:', err);
-        }
-    };
 });
+
+function addProductToTable(product) {
+    const productTableBody = document.querySelector('tbody');
+    const row = document.createElement('tr');
+    
+    row.innerHTML = `
+        <td>${product.id}</td>
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        <td>${product.category}</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    `;
+
+    productTableBody.appendChild(row);
+}

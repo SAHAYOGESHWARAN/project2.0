@@ -1,40 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product');
 
-// Add Product
-router.post('/add', async (req, res) => {
-    try {
-        const { name, price, category } = req.body;
-        const newProduct = new Product({ name, price, category });
-        await newProduct.save();
-        res.status(201).send('Product added successfully');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error adding product');
-    }
+// In-memory storage for products (use database in real-world scenarios)
+let products = [];
+let productId = 1;
+
+// GET route to fetch all products
+router.get('/', (req, res) => {
+    res.render('products', { products }); // Pass products to the EJS view
 });
 
-// Get Products
-router.get('/', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching products');
-    }
-});
+// POST route to add a new product
+router.post('/add', (req, res) => {
+    const { productName, productPrice, productCategory } = req.body;
 
-// Delete Product
-router.delete('/delete/:id', async (req, res) => {
-    try {
-        await Product.findByIdAndDelete(req.params.id);
-        res.send('Product deleted successfully');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error deleting product');
+    if (!productName || !productPrice || !productCategory) {
+        return res.status(400).send('All fields are required');
     }
+
+    const newProduct = {
+        id: productId++,  // Increment product ID
+        name: productName,
+        price: productPrice,
+        category: productCategory
+    };
+
+    products.push(newProduct);
+    res.status(201).json(newProduct);  // Send the new product as JSON
 });
 
 module.exports = router;
