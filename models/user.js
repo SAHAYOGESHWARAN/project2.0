@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Define the schema
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -10,7 +9,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true // Ensure usernames are unique
+        unique: true
     },
     password: {
         type: String,
@@ -23,22 +22,22 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true // Ensure emails are unique
+        unique: true
     },
     verified: {
         type: Boolean,
-        default: false // Default to false if not specified
+        default: false
     },
     role: {
         type: String,
-        enum: ['Admin', 'User'], // Ensure role is either 'Admin' or 'User'
+        enum: ['Admin', 'User'],
         required: true
     }
 });
 
 // Hash the password before saving the user
 userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next(); // Only hash the password if it's modified or new
+    if (!this.isModified('password')) return next();
 
     try {
         const salt = await bcrypt.genSalt(10);
@@ -58,4 +57,7 @@ userSchema.methods.validPassword = async function(password) {
     }
 };
 
-module.exports = mongoose.model('User', userSchema);
+// Avoid overwriting the model if it already exists
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+module.exports = User;
