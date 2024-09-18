@@ -1,9 +1,3 @@
-// Simulate fetching user data
-const users = [
-    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin' },
-    { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'User' },
-    // More user objects...
-];
 
 function renderUsers() {
     const userList = document.getElementById('user-list');
