@@ -88,3 +88,8 @@ app.use((err, req, res, next) => {
         error: err.message 
     });
 });
+
+// Listen on the specified port
+app.listen(port, () => {
+    console.log(`App is running on port ${port}`);
+});
