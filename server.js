@@ -48,30 +48,55 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve static files (CSS, Fonts)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Routes
-app.use('/', require('./routes/index'));
-
-
 // Connect flash
 app.use(flash());
 
 // Global variables for flash messages
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  res.locals.user = req.user || null; // Set user for views
-  next();
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null; // Set user for views
+    next();
 });
 
+// Serve static files (CSS, Fonts)
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Routes
+app.use('/', require('./routes/index'));
 app.use('/users', userRoute);
 
 app.get('/', (req, res) => {
     res.render('home');
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
+
+app.get('/users', (req, res) => {
+    res.render('users');
+});
+
+app.get('/products', (req, res) => {
+    res.render('products');
+});
+
+app.get('/analytics', (req, res) => {
+    res.render('analytics');
+});
+
+app.get('/settings', (req, res) => {
+    res.render('settings');
+});
+
+// Handle logout logic here (e.g., destroying session)
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
 });
 
 // Define error handler
