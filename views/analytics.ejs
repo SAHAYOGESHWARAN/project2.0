@@ -5,13 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <%- include('partials/sidebar') %>
     <div class="main-content">
-        <h1>Analytics Page</h1>
+        <h1>Analytics Dashboard</h1>
         <p>View site analytics here.</p>
+        
+        <div class="chart-container">
+            <h2>User Sign-Ups Over Time</h2>
+            <canvas id="userSignupsChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Product Sales Over Time</h2>
+            <canvas id="productSalesChart"></canvas>
+        </div>
     </div>
     <script src="/js/sidebar-toggle.js"></script>
+    <script src="/js/analytics.js"></script> <!-- Link to additional JS for analytics -->
 </body>
 </html>
