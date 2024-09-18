@@ -5,35 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
 </head>
 <body>
     <%- include('partials/sidebar') %>
     <div class="main-content">
         <h1>Settings Page</h1>
-        <p>Manage your settings here.</p>
-        
-        <form id="settings-form" method="POST" action="/settings/update">
-            <div class="form-group">
-                <label for="profileName">Profile Name:</label>
-                <input type="text" id="profileName" name="profileName" value="<%= settings.profileName %>" required>
-            </div>
-            <div class="form-group">
-                <label for="emailNotifications">Email Notifications:</label>
-                <input type="checkbox" id="emailNotifications" name="emailNotifications" <% if (settings.emailNotifications) { %>checked<% } %>>
-            </div>
-            <div class="form-group">
-                <label for="darkMode">Dark Mode:</label>
-                <input type="checkbox" id="darkMode" name="darkMode" <% if (settings.darkMode) { %>checked<% } %>>
-            </div>
-            <button type="submit" class="submit-btn">Save Changes</button>
+        <form action="/settings/update" method="POST">
+            <!-- Add your form fields here -->
         </form>
-        
-        <% if (message) { %>
-            <div class="alert alert-success"><%= message %></div>
+
+        <!-- Handle success message -->
+        <% if (typeof success_msg !== 'undefined' && success_msg) { %>
+            <div class="alert alert-success"><%= success_msg %></div>
         <% } %>
-        <% if (error) { %>
-            <div class="alert alert-danger"><%= error %></div>
+
+        <!-- Handle error message -->
+        <% if (typeof error_msg !== 'undefined' && error_msg) { %>
+            <div class="alert alert-danger"><%= error_msg %></div>
         <% } %>
     </div>
     <script src="/js/sidebar-toggle.js"></script>
