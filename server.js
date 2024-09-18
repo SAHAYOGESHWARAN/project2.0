@@ -31,6 +31,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Set up EJS and Express layouts
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Set up static folder
 app.use('/static', express.static(path.join(__dirname, 'public')));
@@ -60,44 +61,44 @@ app.use((req, res, next) => {
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
     res.locals.user = req.user || null; // Set user globally for views
+    res.locals.activePage = ''; // Default value, will be set in route handlers
     next();
 });
 
 // Routes
-app.use('/', require('./routes/index'));
 app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 
-// Pages
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
 // Dashboard route
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard', { activePage: 'dashboard' });
+    res.locals.activePage = 'dashboard';
+    res.render('dashboard');
 });
 
 // Users route
 app.get('/users', (req, res) => {
-    res.render('users', { activePage: 'users' });
+    res.locals.activePage = 'users';
+    res.render('users');
 });
 
 // Products route
 app.get('/products', (req, res) => {
-    res.render('products', { activePage: 'products' });
+    res.locals.activePage = 'products';
+    res.render('products');
 });
 
 // Analytics route
 app.get('/analytics', (req, res) => {
-    res.render('analytics', { activePage: 'analytics' });
+    res.locals.activePage = 'analytics';
+    res.render('analytics');
 });
 
 // Settings route
 app.get('/settings', (req, res) => {
-    res.render('settings', { activePage: 'settings' });
+    res.locals.activePage = 'settings';
+    res.render('settings');
 });
 
 // Handle logout
@@ -108,12 +109,47 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// Handle home route
+app.get('/', (req, res) => {
+    res.render('home');
+});
+
 // Error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', { 
         error: err.message 
     });
+});
+
+// Route for Messages page
+app.get('/messages', (req, res) => {
+    res.render('messages', { activePage: 'messages' });
+});
+
+// Route for Tasks page
+app.get('/tasks', (req, res) => {
+    res.render('tasks', { activePage: 'tasks' });
+});
+
+// Route for Calendar page
+app.get('/calendar', (req, res) => {
+    res.render('calendar', { activePage: 'calendar' });
+});
+
+// Route for Reports page
+app.get('/reports', (req, res) => {
+    res.render('reports', { activePage: 'reports' });
+});
+
+// Route for Admin Panel page
+app.get('/admin', (req, res) => {
+    res.render('admin', { activePage: 'admin' });
+});
+
+// Route for Documentation page
+app.get('/docs', (req, res) => {
+    res.render('docs', { activePage: 'docs' });
 });
 
 // Start the server
