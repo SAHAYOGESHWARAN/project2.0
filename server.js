@@ -10,6 +10,8 @@ const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
+const messageRoutes = require('./routes/messages'); // Adjust the path as needed
+
 require('dotenv').config();
 
 const app = express();
@@ -126,6 +128,9 @@ app.use((err, req, res, next) => {
 app.get('/messages', (req, res) => {
     res.render('messages', { activePage: 'messages' });
 });
+
+// Use the message routes
+app.use('/messages', messageRoutes);
 
 // Route for Tasks page
 app.get('/tasks', (req, res) => {
