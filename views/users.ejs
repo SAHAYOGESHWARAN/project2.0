@@ -5,13 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
 </head>
 <body>
     <%- include('partials/sidebar') %>
     <div class="main-content">
-        <h1>Users Page</h1>
-        <p>Manage users here.</p>
+        <h1>Users Management</h1>
+        <div class="user-actions">
+            <input type="text" id="search" placeholder="Search users..." class="search-bar">
+            <button class="add-user-btn">Add User</button>
+        </div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="user-list">
+                <!-- User rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button class="prev-btn">Previous</button>
+            <span class="page-info">Page 1 of 10</span>
+            <button class="next-btn">Next</button>
+        </div>
     </div>
     <script src="/js/sidebar-toggle.js"></script>
+    <script src="/js/users.js"></script> <!-- Link to additional JS for user management -->
 </body>
 </html>
