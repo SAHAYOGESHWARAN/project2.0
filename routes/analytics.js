@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Adjust the path as needed
+const User = require('../models/user'); // Adjust the path as needed
 const Order = require('../models/Order'); // Example model for product sales
 
 // Get user sign-ups data

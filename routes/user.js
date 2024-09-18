@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Adjust the path according to your project structure
+const User = require('../models/user'); // Adjust the path according to your project structure
 
 const { createUser, getSignup } = require('../controllers/signUpController');
 const { authUser, getLogin } = require('../controllers/loginController');
