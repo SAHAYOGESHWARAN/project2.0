@@ -201,3 +201,31 @@ body.dark-mode {
 .page-info {
     margin: 0 20px;
 }
+
+/* Example sidebar styles */
+.sidebar {
+    width: 200px;
+    background-color: #f4f4f4;
+    position: fixed;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+}
+
+.sidebar a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}

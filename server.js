@@ -1,5 +1,5 @@
-const path = require('path');
 const express = require('express');
+const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -43,7 +43,7 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS in production
 }));
 
-// Body parser
+// Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -51,20 +51,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect flash
+// Connect flash for flash messages
 app.use(flash());
 
-// Global variables for flash messages
+// Global variables for flash messages and user
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
-    res.locals.user = req.user || null; // Set user for views
+    res.locals.user = req.user || null; // Set user globally for views
     next();
 });
-
-// Serve static files (CSS, Fonts)
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', require('./routes/index'));
@@ -103,7 +100,7 @@ app.get('/settings', (req, res) => {
     res.render('settings', { activePage: 'settings' });
 });
 
-// Handle logout logic
+// Handle logout
 app.get('/logout', (req, res) => {
     req.logout((err) => {
         if (err) return next(err);
@@ -119,7 +116,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Listen on the specified port
+// Start the server
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
 });
