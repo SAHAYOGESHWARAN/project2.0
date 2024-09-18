@@ -78,24 +78,29 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
+// Dashboard route
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+    res.render('dashboard', { activePage: 'dashboard' });
 });
 
-app.get('/products', (req, res) => {
-    res.render('products');
-});
-
-app.get('/analytics', (req, res) => {
-    res.render('analytics');
-});
-
-app.get('/settings', (req, res) => {
-    res.render('settings');
-});
-
+// Users route
 app.get('/users', (req, res) => {
-    res.render('users');
+    res.render('users', { activePage: 'users' });
+});
+
+// Products route
+app.get('/products', (req, res) => {
+    res.render('products', { activePage: 'products' });
+});
+
+// Analytics route
+app.get('/analytics', (req, res) => {
+    res.render('analytics', { activePage: 'analytics' });
+});
+
+// Settings route
+app.get('/settings', (req, res) => {
+    res.render('settings', { activePage: 'settings' });
 });
 
 // Handle logout logic
