@@ -48,6 +48,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Serve static files (CSS, Fonts)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/', require('./routes/index'));
+
+
 // Connect flash
 app.use(flash());
 
