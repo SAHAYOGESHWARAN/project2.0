@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
 const { localAuth } = require('./config/passportLogic');
 require('dotenv').config();
+const productRoutes = require('./routes/products');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -90,6 +91,8 @@ app.get('/analytics', (req, res) => {
 app.get('/settings', (req, res) => {
     res.render('settings');
 });
+
+app.use('/products', productRoutes);
 
 // Handle logout logic here (e.g., destroying session)
 app.get('/logout', (req, res) => {
