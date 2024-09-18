@@ -5,13 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
 </head>
 <body>
     <%- include('partials/sidebar') %>
     <div class="main-content">
-        <h1>Products Page</h1>
-        <p>Manage products here.</p>
+        <h1>Products Management</h1>
+        <div class="product-actions">
+            <form id="addProductForm">
+                <h2>Add New Product</h2>
+                <input type="text" id="productName" placeholder="Product Name" required>
+                <input type="number" id="productPrice" placeholder="Price" required>
+                <input type="text" id="productCategory" placeholder="Category" required>
+                <button type="submit">Add Product</button>
+            </form>
+
+            <div class="product-list">
+                <h2>Product List</h2>
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <!-- Product rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <script src="/js/sidebar-toggle.js"></script>
+    <script src="/js/products.js"></script> <!-- Link to additional JS for product management -->
 </body>
 </html>
