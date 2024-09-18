@@ -31,4 +31,37 @@ router.post('/update', async (req, res) => {
     }
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const settings = await Settings.findOne({ userId: req.user._id });
+        res.render('settings', {
+            settings: settings || {},
+            message: req.flash('success_msg'),
+            error: req.flash('error_msg')
+        });
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Error loading settings.');
+        res.redirect('/dashboard');
+    }
+});
+
+router.post('/update', async (req, res) => {
+    try {
+        const { profileName, emailNotifications, darkMode } = req.body;
+        await Settings.findOneAndUpdate(
+            { userId: req.user._id },
+            { profileName, emailNotifications: !!emailNotifications, darkMode: !!darkMode },
+            { upsert: true }
+        );
+        req.flash('success_msg', 'Settings updated successfully.');
+        res.redirect('/settings'); // Redirect to the settings page to display the message
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Error updating settings.');
+        res.redirect('/settings'); // Redirect to the settings page to display the error
+    }
+});
+
+
 module.exports = router;
