@@ -1,50 +1,66 @@
+const express = require('express');
+const router = express.Router();
+const User = require('../models/User'); // Adjust the path according to your project structure
 
+const { createUser, getSignup } = require('../controllers/signUpController');
+const { authUser, getLogin } = require('../controllers/loginController');
+const { loadVerify, verifyUser, resendCode } = require('../controllers/verifyController');
+const { isLoggedIn, isVerified, notVerified, notLoggedIn } = require('../config/middleware');
 
-const express = require('express')
-const router = express.Router()
-const { createUser, getSignup } = require('../controllers/signUpController')
-const { authUser, getLogin } = require('../controllers/loginController')
-const { loadVerify, verifyUser, resendCode } = require('../controllers/verifyController')
-const { isLoggedIn, isVerified, notVerified, notLoggedIn } = require('../config/middleware')
-
-
-//login route
+// Login route
 router.route('/login')
     .all(notLoggedIn)
     .get(getLogin)
-    .post(authUser)
+    .post(authUser);
 
-
-//signup route
+// Signup route
 router.route('/signup')
     .all(notLoggedIn)
     .get(getSignup)
-    .post(createUser)
+    .post(createUser);
 
-//logout
+// Logout route
 router.route('/logout')
-    .get(async (req, res) => {
-        req.logout();
-        res.redirect('/');
-    })
+    .get((req, res) => {
+        req.logout(err => {
+            if (err) {
+                console.error('Logout error:', err);
+            }
+            res.redirect('/');
+        });
+    });
 
+// Resend verification code route
 router.route('/resend')
     .all(isLoggedIn, notVerified)
-    .get(resendCode)
+    .get(resendCode);
 
-//verify route
+// Verify route
 router.route('/verify')
     .all(isLoggedIn, notVerified)
     .get(loadVerify)
-    .post(verifyUser)
+    .post(verifyUser);
 
-//dashboard
+// Dashboard route
 router.route('/dashboard')
     .all(isLoggedIn, isVerified)
-    .get(async (req, res) => {
-        res.render('dashboard')
-    })
+    .get((req, res) => {
+        res.render('dashboard');
+    });
 
+// Add User route
+router.post('/users/add', async (req, res) => {
+    try {
+        const { name, email, role } = req.body;
+        const newUser = new User({ name, email, role });
+        await newUser.save();
+        req.flash('success_msg', 'User added successfully!');
+        res.redirect('/users');
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Error adding user.');
+        res.redirect('/users');
+    }
+});
 
-//export router
-module.exports = router
+module.exports = router;

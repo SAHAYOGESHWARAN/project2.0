@@ -1,56 +1,61 @@
-
-
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
+// Define the schema
 const userSchema = new mongoose.Schema({
-    name : {
+    name: {
         type: String,
         required: true
     },
-    username : {
+    username: {
+        type: String,
+        required: true,
+        unique: true // Ensure usernames are unique
+    },
+    password: {
         type: String,
         required: true
     },
-    password : {
+    phonenumber: {
         type: String,
         required: true
     },
-    phonenumber : {
+    email: {
         type: String,
-        required: true
+        required: true,
+        unique: true // Ensure emails are unique
     },
-    email : {
+    verified: {
+        type: Boolean,
+        default: false // Default to false if not specified
+    },
+    role: {
         type: String,
+        enum: ['Admin', 'User'], // Ensure role is either 'Admin' or 'User'
         required: true
-    },
-    verified: Boolean
-})
+    }
+});
 
-//hash password on save
-userSchema.pre('save', async function() {
-    return new Promise( async (resolve, reject) => {
-        await bcrypt.genSalt(10, async (err, salt) => {
-            await bcrypt.hash(this.password, salt, async (err, hash) => {
-                if(err) {
-                    reject (err)
-                } else {
-                    resolve (this.password = hash)
-                }
-            });
-        });
-    })
-})
+// Hash the password before saving the user
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next(); // Only hash the password if it's modified or new
 
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Method to validate the password
 userSchema.methods.validPassword = async function(password) {
-    return new Promise((resolve, reject) => {
-        bcrypt.compare(password, this.password, (err, res) => {
-            if(err) {
-                reject (err)
-            } 
-            resolve (res)
-        }); 
-    })
-}
+    try {
+        return await bcrypt.compare(password, this.password);
+    } catch (err) {
+        throw err;
+    }
+};
 
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model('User', userSchema);
