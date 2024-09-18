@@ -1,19 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Favicon -->
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
+
 <body>
+    <!-- Header -->
+    <header>
+        <h1 class="sr-only">Messages Page</h1>
+        <!-- Optionally, add a top bar or additional navigation here -->
+    </header>
+
+    <!-- Sidebar -->
     <%- include('partials/sidebar') %> <!-- Include sidebar -->
 
-    <div class="main-content">
-        <h1>Messages Page</h1>
-        <p>Manage your messages here.</p>
-    </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <section>
+            <h1>Messages</h1>
+            <p>Manage your messages here.</p>
+            <!-- Example form to add a new message -->
+            <form id="message-form" action="/messages" method="POST">
+                <label for="message">New Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+            <div id="message-list">
+                <!-- Messages will be dynamically injected here -->
+            </div>
+        </section>
+    </main>
 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="year"></span> Your Company. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
     <script src="/static/js/sidebar-toggle.js"></script>
+    <!-- Update the year dynamically in footer -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <!-- Optionally add AJAX script for dynamic content loading -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/messages')
+                .then(response => response.json())
+                .then(data => {
+                    const messageList = document.getElementById('message-list');
+                    messageList.innerHTML = data.messages.map(message => `
+                        <div class="message">
+                            <p>${message.content}</p>
+                            <small>Sent on ${new Date(message.date).toLocaleString()}</small>
+                        </div>
+                    `).join('');
+                });
+        });
+    </script>
 </body>
+
 </html>
