@@ -23,13 +23,10 @@ function renderUsers() {
 // Initialize user list
 renderUsers();
 
-// Add event listeners for pagination buttons (mock functionality)
-document.querySelector('.prev-btn').addEventListener('click', () => {
-    console.log('Previous page');
-    // Implement pagination logic
+document.getElementById('add-user-btn').addEventListener('click', () => {
+    document.getElementById('add-user-form').classList.toggle('hidden');
 });
 
-document.querySelector('.next-btn').addEventListener('click', () => {
-    console.log('Next page');
-    // Implement pagination logic
+document.getElementById('cancel-btn').addEventListener('click', () => {
+    document.getElementById('add-user-form').classList.add('hidden');
 });
