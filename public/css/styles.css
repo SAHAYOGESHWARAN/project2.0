@@ -1,28 +1,130 @@
+/* General Body Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Sidebar Styling */
 .sidebar {
-    width: 200px;
+    width: 220px;
     height: 100vh;
     position: fixed;
     background-color: #333;
     color: white;
     padding-top: 20px;
+    transition: width 0.3s ease;
+    overflow-x: hidden;  /* Prevents horizontal scroll */
+    z-index: 1000; /* Ensures sidebar stays on top */
 }
 
+/* Sidebar links */
 .sidebar a {
     display: block;
     color: white;
-    padding: 15px;
+    padding: 15px 20px;
     text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
 }
 
+/* Hover effect with smooth transition */
 .sidebar a:hover {
     background-color: #575757;
+    padding-left: 30px;  /* Subtle sliding effect on hover */
 }
 
+/* Active link styling */
+.sidebar a.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* Sidebar header */
+.sidebar-header {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Collapsible Sidebar on smaller screens */
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar.collapsed a {
+    padding-left: 15px;
+    text-align: center;
+}
+
+.sidebar.collapsed a:hover {
+    padding-left: 20px;
+}
+
+/* Main Content Styling */
 .main-content {
-    margin-left: 220px;
+    margin-left: 240px;
     padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+/* If sidebar is collapsed */
+.sidebar.collapsed ~ .main-content {
+    margin-left: 80px;
+}
+
+/* Button to toggle sidebar */
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    right: -25px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+    
+    .sidebar a {
+        padding-left: 10px;
+        text-align: center;
+    }
+
+    .main-content {
+        margin-left: 80px;
+    }
+}
+
+/* Dark Mode Support */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.dark-mode .sidebar {
+    background-color: #222;
+}
+
+.dark-mode .sidebar a:hover {
+    background-color: #444;
+}
+
+.dark-mode .sidebar a.active {
+    background-color: #0056b3;
 }
