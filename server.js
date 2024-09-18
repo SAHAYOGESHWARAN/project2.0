@@ -10,6 +10,9 @@ const { localAuth } = require('./config/passportLogic');
 require('dotenv').config();
 const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
+const settingsRoutes = require('./routes/settings');
+
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -94,8 +97,8 @@ app.get('/settings', (req, res) => {
 });
 
 app.use('/products', productRoutes);
-
 app.use('/analytics', analyticsRoutes);
+app.use('/settings', settingsRoutes);
 
 // Handle logout logic here (e.g., destroying session)
 app.get('/logout', (req, res) => {
