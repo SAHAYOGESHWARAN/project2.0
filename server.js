@@ -77,29 +77,36 @@ app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/tasks', tasksRoute); // Use tasksRoute consistently
 
-// Get Tasks
+// Task Schema
+const taskSchema = new mongoose.Schema({
+    description: String,
+    date: { type: Date, default: Date.now }
+});
+
+// Get all tasks
 app.get('/tasks', async (req, res) => {
     try {
         const tasks = await Task.find();
         res.json({ tasks });
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching tasks' });
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.status(500).json({ message: "Error fetching tasks" });
     }
 });
 
-// Add New Task
+// Add a new task
 app.post('/tasks', async (req, res) => {
-    const newTask = new Task({
-        description: req.body.task,
-    });
-
     try {
+        const newTask = new Task({ description: req.body.task });
         const savedTask = await newTask.save();
-        res.status(201).json(savedTask);
-    } catch (err) {
-        res.status(400).json({ message: 'Error saving task' });
+        res.json(savedTask);
+    } catch (error) {
+        console.error('Error adding task:', error);
+        res.status(500).json({ message: "Error adding task" });
     }
 });
+
+
 // Dashboard route
 app.get('/dashboard', (req, res) => {
     res.locals.activePage = 'dashboard';
