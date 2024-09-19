@@ -75,6 +75,19 @@ app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/tasks', tasksRoute); // Use tasksRoute consistently
 
+
+// Sample tasks data (for demonstration)
+const tasks = [
+    { id: 1, title: 'Task 1', completed: false },
+    { id: 2, title: 'Task 2', completed: true },
+];
+
+// Define the /tasks route
+app.get('/tasks', (req, res) => {
+    res.json(tasks); // Send tasks data as a JSON response
+});
+
+
 // Dashboard route
 app.get('/dashboard', (req, res) => {
     res.locals.activePage = 'dashboard';
