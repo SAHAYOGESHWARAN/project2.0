@@ -75,19 +75,29 @@ app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/tasks', tasksRoute); // Use tasksRoute consistently
 
-
-// Sample tasks data (for demonstration)
-const tasks = [
-    { id: 1, title: 'Task 1', completed: false },
-    { id: 2, title: 'Task 2', completed: true },
-];
-
-// Define the /tasks route
-app.get('/tasks', (req, res) => {
-    res.json(tasks); // Send tasks data as a JSON response
+// Get Tasks
+app.get('/tasks', async (req, res) => {
+    try {
+        const tasks = await Task.find();
+        res.json({ tasks });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching tasks' });
+    }
 });
 
+// Add New Task
+app.post('/tasks', async (req, res) => {
+    const newTask = new Task({
+        description: req.body.task,
+    });
 
+    try {
+        const savedTask = await newTask.save();
+        res.status(201).json(savedTask);
+    } catch (err) {
+        res.status(400).json({ message: 'Error saving task' });
+    }
+});
 // Dashboard route
 app.get('/dashboard', (req, res) => {
     res.locals.activePage = 'dashboard';
