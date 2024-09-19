@@ -11,10 +11,12 @@ const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
-const userRoutes = require('./routes/userRoutes'); // Adjust the path as needed
+const userRoutes = require('./routes/userRoutes');
+const flashMiddleware = require('./middleware/flashMiddleware');
+ // Adjust the path as needed
 
 require('dotenv').config();
-
+flashMiddleware(app);
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -74,6 +76,28 @@ app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
+
+
+
+
+// Set up session
+app.use(session({
+    secret: '12345',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Initialize flash
+app.use(flash());
+
+// Middleware to pass flash messages to templates
+app.use((req, res, next) => {
+    res.locals.messages = {
+        success: req.flash('success_msg'),
+        error: req.flash('error_msg')
+    };
+    next();
+});
 
 // Dashboard route
 app.get('/dashboard', (req, res) => {

@@ -1,19 +1,30 @@
-// In your userController.js
-const User = require('../models/User'); // Ensure you have your User model imported
+// E:\project _2.0\controllers\userController.js
+const User = require('../models/User'); // Adjust the path to your User model
 
-exports.addUser = async (req, res) => {
+// Function to get users
+exports.getUsers = async (req, res) => {
     try {
-        const { name, username, password, phonenumber, email, role } = req.body;
-
-        // Create a new user instance
-        const newUser = new User({ name, username, password, phonenumber, email, role });
-        await newUser.save(); // Save to MongoDB
-
-        req.flash('success_msg', 'User registered successfully!'); // Flash message for success
-        res.redirect('/users'); // Redirect back to users page
+        const users = await User.find(); // Fetch users from MongoDB
+        res.render('users', { users }); // Render the users view and pass the user data
     } catch (err) {
         console.error(err);
-        req.flash('error_msg', 'Error registering user: ' + err.message); // Flash message for error
-        res.redirect('/users'); // Redirect back to users page
+        res.status(500).send('Server Error');
+    }
+};
+
+// Function to add user
+exports.addUser = async (req, res) => {
+    const { name, username, password, phonenumber, email, role } = req.body;
+    // You can add validation and error handling here
+    const newUser = new User({ name, username, password, phonenumber, email, role });
+
+    try {
+        await newUser.save(); // Save user to MongoDB
+        req.flash('success_msg', 'User registered successfully!'); // Flash message
+        res.redirect('/users'); // Redirect to users page
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Error registering user.'); // Flash message
+        res.redirect('/users');
     }
 };
