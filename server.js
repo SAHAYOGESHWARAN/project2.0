@@ -12,7 +12,7 @@ const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const messageRoutes = require('./routes/messages');
 const tasksRoute = require('./routes/tasks');
-const eventRoutes = require('./routes/events'); // Ensure this path is correct
+const eventRoutes = require('./routes/events');
 const { localAuth } = require('./config/passportLogic');
 
 require('dotenv').config();
@@ -21,9 +21,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true 
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
 .then(() => {
     console.log('Connected to MongoDB');
@@ -43,9 +43,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware
-app.use(session({ 
+app.use(session({
     secret: process.env.SESSION_SECRET || 'please log me in',
-    resave: false, 
+    resave: false,
     saveUninitialized: false,
     cookie: { secure: false } // Set to true if using HTTPS in production
 }));
@@ -68,17 +68,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Event Schema
-const eventSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    date: { type: Date, required: true },
-});
-
-// Use Mongoose's model method only if the model is not already defined
-const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
-
-// Routes
-app.use('/events', eventRoutes); // Ensure to have event routes defined
+// Define routes
+app.use('/events', eventRoutes);
 app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
@@ -98,8 +89,8 @@ app.get('/', (req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).render('error', { 
-        error: err.message 
+    res.status(500).render('error', {
+        error: err.message
     });
 });
 
