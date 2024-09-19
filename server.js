@@ -10,7 +10,8 @@ const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
-const messageRoutes = require('./routes/messages'); // Adjust the path as needed
+const messageRoutes = require('./routes/messages');
+const userRoutes = require('./routes/userRoutes'); // Adjust the path as needed
 
 require('dotenv').config();
 
@@ -72,6 +73,7 @@ app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
+app.use('/users', userRoutes);
 
 // Dashboard route
 app.get('/dashboard', (req, res) => {
