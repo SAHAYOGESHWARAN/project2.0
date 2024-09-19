@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
-    <link rel="stylesheet" href="/static/css/styles.css"> <!-- Corrected static path -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <%- include('partials/sidebar', { activePage: 'users' }) %>
 
     <div class="main-content">
         <h1>Users Management</h1>
+
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+            <div class="alert alert-error"><%= messages.error %></div>
+        <% } %>
 
         <div class="user-actions">
             <input type="text" id="search" placeholder="Search users..." class="search-bar">
@@ -73,6 +80,6 @@
     </div>
 
     <script src="/static/js/sidebar-toggle.js"></script>
-    <script src="/static/js/users.js"></script> <!-- Users management logic -->
+    <script src="/static/js/users.js"></script>
 </body>
 </html>
