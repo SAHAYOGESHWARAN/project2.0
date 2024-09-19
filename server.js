@@ -1,19 +1,19 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userRoute = require('./routes/user');
 const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
-const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
-const cors = require('cors');
-const tasksRoute = require('./routes/tasks'); // Adjust the path as needed
+const tasksRoute = require('./routes/tasks');
+const eventRoutes = require('./routes/events'); // Ensure this path is correct
+const { localAuth } = require('./config/passportLogic');
 
 require('dotenv').config();
 
@@ -30,16 +30,17 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Passport local authentication strategy
-localAuth(passport);
-
 // Set up EJS and Express layouts
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Set up static folder
+// Serve static files
 app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Session middleware
 app.use(session({ 
@@ -49,11 +50,8 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS in production
 }));
 
-// Body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Initialize passport and session handling
+// Passport local authentication strategy
+localAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -76,43 +74,25 @@ const eventSchema = new mongoose.Schema({
     date: { type: Date, required: true },
 });
 
-const Event = mongoose.model('Event', eventSchema);
+// Use Mongoose's model method only if the model is not already defined
+const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
 
 // Routes
-app.use('/events', require('./routes/events')); // Make sure to have event routes defined
-
+app.use('/events', eventRoutes); // Ensure to have event routes defined
 app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
-app.use('/tasks', tasksRoute); // Use tasksRoute consistently
+app.use('/tasks', tasksRoute);
 
-// Get all events
-app.get('/events', async (req, res) => {
-    try {
-        const events = await Event.find();
-        res.json({ events });
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).json({ message: "Error fetching events" });
-    }
-});
-
-// Add a new event
-app.post('/events', async (req, res) => {
-    try {
-        const newEvent = new Event({ title: req.body.title, date: req.body.date });
-        const savedEvent = await newEvent.save();
-        res.json(savedEvent);
-    } catch (error) {
-        console.error('Error adding event:', error);
-        res.status(500).json({ message: "Error adding event" });
-    }
+// Define the calendar route
+app.get('/calendar', (req, res) => {
+    res.render('calendar', { activePage: 'calendar' });
 });
 
 // Serve the main HTML page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'calendar.html'));
+    res.render('home'); // Adjust if you have a home view
 });
 
 // Error handler
