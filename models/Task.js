@@ -1,14 +1,19 @@
+// models/Task.js
 const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
-        required: true
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
     },
     status: {
         type: String,
-        enum: ['Pending', 'In Progress', 'Completed'],
-        default: 'Pending'
+        enum: ['pending', 'completed'],
+        default: 'pending'
     },
     createdAt: {
         type: Date,
