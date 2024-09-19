@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // Adjust the path according to your project structure
+const User = require('../models/User'); // Adjust the path according to your project structure
 
 const { createUser, getSignup } = require('../controllers/signUpController');
 const { authUser, getLogin } = require('../controllers/loginController');
@@ -48,18 +48,52 @@ router.route('/dashboard')
         res.render('dashboard');
     });
 
-// Add User route
-router.post('/users/add', async (req, res) => {
+// Fetch all users
+router.get('/users', async (req, res) => {
+    const users = await User.find();
+    res.json(users);
+});
+
+// Create a new user
+router.post('/users', async (req, res) => {
     try {
         const { name, email, role } = req.body;
         const newUser = new User({ name, email, role });
         await newUser.save();
         req.flash('success_msg', 'User added successfully!');
-        res.redirect('/users');
+        res.status(201).json(newUser); // Return the created user as JSON
     } catch (err) {
         console.error(err);
         req.flash('error_msg', 'Error adding user.');
-        res.redirect('/users');
+        res.status(400).send(); // Send a bad request response
+    }
+});
+
+// Update a user
+router.put('/users/:id', async (req, res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedUser) {
+            return res.status(404).send(); // Not found
+        }
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(400).send(); // Bad request
+    }
+});
+
+// Delete a user
+router.delete('/users/:id', async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) {
+            return res.status(404).send(); // Not found
+        }
+        res.status(204).send(); // No content
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(); // Internal server error
     }
 });
 
