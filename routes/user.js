@@ -74,12 +74,12 @@ router.put('/users/:id', async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedUser) {
-            return res.status(404).send(); // Not found
+            return res.status(404).send(); 
         }
         res.json(updatedUser);
     } catch (err) {
         console.error(err);
-        res.status(400).send(); // Bad request
+        res.status(400).send(); 
     }
 });
 
@@ -88,12 +88,12 @@ router.delete('/users/:id', async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete(req.params.id);
         if (!deletedUser) {
-            return res.status(404).send(); // Not found
+            return res.status(404).send(); 
         }
-        res.status(204).send(); // No content
+        res.status(204).send(); 
     } catch (err) {
         console.error(err);
-        res.status(500).send(); // Internal server error
+        res.status(500).send(); 
     }
 });
 

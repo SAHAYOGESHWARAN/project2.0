@@ -26,18 +26,18 @@
     </div>
 
     <script src="/js/sidebar-toggle.js"></script>
-    <script src="/js/analytics.js"></script> <!-- Link to additional JS for analytics -->
+    <script src="/js/analytics.js"></script> 
 
     <script>
         // Fetch user sign-ups data
         async function fetchUserSignups() {
-            const response = await fetch('/api/user-signups'); // Adjust the endpoint as needed
+            const response = await fetch('/api/user-signups'); 
             return response.json();
         }
 
         // Fetch product sales data
         async function fetchProductSales() {
-            const response = await fetch('/api/product-sales'); // Adjust the endpoint as needed
+            const response = await fetch('/api/product-sales');
             return response.json();
         }
 

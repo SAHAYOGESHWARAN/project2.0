@@ -57,7 +57,7 @@ userSchema.methods.validPassword = async function(password) {
     }
 };
 
-// Avoid overwriting the model if it already exists
+
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = User;

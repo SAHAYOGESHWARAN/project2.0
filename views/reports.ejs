@@ -50,9 +50,9 @@
             $('#reportsTable').DataTable();
         });
 
-        // Function to fetch reports data from the server
+       
         async function loadReports() {
-            const response = await fetch('/api/reports'); // Adjust endpoint as needed
+            const response = await fetch('/api/reports'); 
             const reports = await response.json();
             const tableBody = $('#reportsTable tbody');
 
@@ -71,7 +71,7 @@
             });
         }
 
-        // Function to filter reports based on selected criteria
+    
         function filterReports() {
             const filterValue = $('#filter').val();
             const table = $('#reportsTable').DataTable();
@@ -79,7 +79,7 @@
             if (filterValue === 'all') {
                 table.columns().search('').draw();
             } else {
-                table.columns(1).search(filterValue).draw(); // Assuming the report type is in the second column
+                table.columns(1).search(filterValue).draw(); 
             }
         }
     </script>

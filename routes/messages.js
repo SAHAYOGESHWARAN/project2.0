@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         const { message } = req.body;
         const newMessage = new Message({ content: message });
         await newMessage.save();
-        res.redirect('/messages'); // Redirect back to the messages page
+        res.redirect('/messages'); 
     } catch (err) {
         res.status(500).json({ error: 'Failed to save message' });
     }

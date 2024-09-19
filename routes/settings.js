@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Settings = require('../models/Settings'); // Adjust the path as needed
+const Settings = require('../models/Settings'); 
 
 // Get settings
 router.get('/', async (req, res) => {
@@ -55,11 +55,11 @@ router.post('/update', async (req, res) => {
             { upsert: true }
         );
         req.flash('success_msg', 'Settings updated successfully.');
-        res.redirect('/settings'); // Redirect to the settings page to display the message
+        res.redirect('/settings'); 
     } catch (err) {
         console.error(err);
         req.flash('error_msg', 'Error updating settings.');
-        res.redirect('/settings'); // Redirect to the settings page to display the error
+        res.redirect('/settings'); 
     }
 });
 

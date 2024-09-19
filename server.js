@@ -13,7 +13,7 @@ const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
 const flashMiddleware = require('./middleware/flashMiddleware');
- // Adjust the path as needed
+
 
 require('dotenv').config();
 
@@ -46,7 +46,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'please log me in',
     resave: false, 
     saveUninitialized: false,
-    cookie: { secure: false } // Set to true if using HTTPS in production
+    cookie: { secure: false }
 }));
 
 // Body parser middleware
@@ -65,8 +65,8 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
-    res.locals.user = req.user || null; // Set user globally for views
-    res.locals.activePage = ''; // Default value, will be set in route handlers
+    res.locals.user = req.user || null; 
+    res.locals.activePage = ''; 
     next();
 });
 

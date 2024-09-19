@@ -1,7 +1,7 @@
 // routes/events.js
 const express = require('express');
 const router = express.Router();
-const Event = require('../models/Event'); // Adjust the path as needed
+const Event = require('../models/Event'); 
 
 // Get all events
 router.get('/', async (req, res) => {

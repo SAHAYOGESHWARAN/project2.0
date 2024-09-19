@@ -12,7 +12,7 @@
         <h1>Calendar Page</h1>
         <p>Manage your calendar here.</p>
 
-        <!-- Form to add a new event -->
+       
         <form id="event-form">
             <label for="event-title">Event Title:</label>
             <input type="text" id="event-title" required>
@@ -30,7 +30,7 @@
     <script src="/static/js/sidebar-toggle.js"></script>
     <script>
         document.getElementById('event-form').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent default form submission
+            e.preventDefault(); 
 
             const title = document.getElementById('event-title').value;
             const date = document.getElementById('event-date').value;
