@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics</title>
+    <title>Analytics Dashboard</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,7 +13,7 @@
     <div class="main-content">
         <h1>Analytics Dashboard</h1>
         <p>View site analytics here.</p>
-        
+
         <div class="chart-container">
             <h2>User Sign-Ups Over Time</h2>
             <canvas id="userSignupsChart"></canvas>
@@ -24,7 +24,81 @@
             <canvas id="productSalesChart"></canvas>
         </div>
     </div>
+
     <script src="/js/sidebar-toggle.js"></script>
     <script src="/js/analytics.js"></script> <!-- Link to additional JS for analytics -->
+
+    <script>
+        // Fetch user sign-ups data
+        async function fetchUserSignups() {
+            const response = await fetch('/api/user-signups'); // Adjust the endpoint as needed
+            return response.json();
+        }
+
+        // Fetch product sales data
+        async function fetchProductSales() {
+            const response = await fetch('/api/product-sales'); // Adjust the endpoint as needed
+            return response.json();
+        }
+
+        // Initialize the charts
+        async function initCharts() {
+            const userSignupsData = await fetchUserSignups();
+            const productSalesData = await fetchProductSales();
+
+            const userSignupsChartCtx = document.getElementById('userSignupsChart').getContext('2d');
+            const productSalesChartCtx = document.getElementById('productSalesChart').getContext('2d');
+
+            // User Sign-Ups Chart
+            new Chart(userSignupsChartCtx, {
+                type: 'line',
+                data: {
+                    labels: userSignupsData.labels,
+                    datasets: [{
+                        label: 'User Sign-Ups',
+                        data: userSignupsData.data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Product Sales Chart
+            new Chart(productSalesChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: productSalesData.labels,
+                    datasets: [{
+                        label: 'Product Sales',
+                        data: productSalesData.data,
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call the initCharts function
+        initCharts();
+    </script>
 </body>
 </html>
