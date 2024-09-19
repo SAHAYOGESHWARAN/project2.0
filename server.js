@@ -16,7 +16,7 @@ const flashMiddleware = require('./middleware/flashMiddleware');
  // Adjust the path as needed
 
 require('dotenv').config();
-flashMiddleware(app);
+
 const app = express();
 const port = process.env.PORT || 3000;
 
