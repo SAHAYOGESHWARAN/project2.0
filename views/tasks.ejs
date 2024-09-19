@@ -1,17 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Favicon -->
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
+
 <body>
-    <%- include('partials/sidebar') %>
-    <div class="main-content">
-        <h1>Tasks Page</h1>
-        <p>Manage your tasks here.</p>
-    </div>
+    <!-- Header -->
+    <header>
+        <h1 class="sr-only">Tasks Page</h1>
+        <!-- Add a top bar or additional navigation here if needed -->
+    </header>
+
+    <!-- Sidebar -->
+    <%- include('partials/sidebar') %> <!-- Include sidebar -->
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section>
+            <h1>Tasks</h1>
+            <p>Manage your tasks here.</p>
+            <!-- Form to add a new task -->
+            <form id="task-form" action="/tasks" method="POST">
+                <label for="task">New Task:</label>
+                <input type="text" id="task" name="task" required>
+                <button type="submit">Add Task</button>
+            </form>
+            <div id="task-list">
+                <!-- Tasks will be dynamically injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="year"></span> Your Company. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
     <script src="/static/js/sidebar-toggle.js"></script>
+    <!-- Update the year dynamically in footer -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <!-- AJAX script for dynamic task loading -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/tasks')
+                .then(response => response.json())
+                .then(data => {
+                    const taskList = document.getElementById('task-list');
+                    taskList.innerHTML = data.tasks.map(task => `
+                        <div class="task">
+                            <p>${task.description}</p>
+                            <small>Created on ${new Date(task.date).toLocaleString()}</small>
+                        </div>
+                    `).join('');
+                });
+        });
+    </script>
 </body>
+
 </html>
