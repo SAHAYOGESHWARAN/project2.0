@@ -10,7 +10,8 @@ const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
-const messageRoutes = require('./routes/messages'); // Adjust the path as needed
+const messageRoutes = require('./routes/messages');
+const taskRoutes = require('./routes/tasks'); // Adjust the path as needed
 
 require('dotenv').config();
 
@@ -96,6 +97,8 @@ app.get('/analytics', (req, res) => {
     res.locals.activePage = 'analytics';
     res.render('analytics');
 });
+// Use the task routes
+app.use('/tasks', taskRoutes);
 
 // Settings route
 app.get('/settings', (req, res) => {
