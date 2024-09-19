@@ -55,19 +55,27 @@
     <!-- AJAX script for dynamic task loading -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/tasks')
+            fetch('/tasks')
                 .then(response => response.json())
                 .then(data => {
                     const taskList = document.getElementById('task-list');
-                    taskList.innerHTML = data.tasks.map(task => `
-                        <div class="task">
-                            <p>${task.description}</p>
-                            <small>Created on ${new Date(task.date).toLocaleString()}</small>
-                        </div>
-                    `).join('');
+                    if (data.tasks && data.tasks.length > 0) {
+                        taskList.innerHTML = data.tasks.map(task => `
+                            <div class="task">
+                                <p>${task.description}</p>
+                                <small>Created on ${new Date(task.date).toLocaleString()}</small>
+                            </div>
+                        `).join('');
+                    } else {
+                        taskList.innerHTML = '<p>No tasks available.</p>';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching tasks:', err);
                 });
         });
     </script>
+    
 </body>
 
 </html>
