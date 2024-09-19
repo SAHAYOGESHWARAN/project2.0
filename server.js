@@ -11,7 +11,7 @@ const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
-const taskRoutes = require('./routes/tasks'); // Adjust the path as needed
+const tasksRoute = require('./routes/tasks'); // Adjust the path as needed
 
 require('dotenv').config();
 
@@ -73,6 +73,7 @@ app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
+app.use('/tasks', tasksRoute); // Use tasksRoute consistently
 
 // Dashboard route
 app.get('/dashboard', (req, res) => {
@@ -97,17 +98,39 @@ app.get('/analytics', (req, res) => {
     res.locals.activePage = 'analytics';
     res.render('analytics');
 });
-// Use the task routes
-app.use('/tasks', taskRoutes);
 
-
-// Routes
-const tasksRoute = require('./routes/tasks');
-app.use('/tasks', tasksRoute);
 // Settings route
 app.get('/settings', (req, res) => {
     res.locals.activePage = 'settings';
     res.render('settings');
+});
+
+// Route for Messages page
+app.get('/messages', (req, res) => {
+    res.render('messages', { activePage: 'messages' });
+});
+
+// Use the message routes
+app.use('/messages', messageRoutes);
+
+// Route for Calendar page
+app.get('/calendar', (req, res) => {
+    res.render('calendar', { activePage: 'calendar' });
+});
+
+// Route for Reports page
+app.get('/reports', (req, res) => {
+    res.render('reports', { activePage: 'reports' });
+});
+
+// Route for Admin Panel page
+app.get('/admin', (req, res) => {
+    res.render('admin', { activePage: 'admin' });
+});
+
+// Route for Documentation page
+app.get('/docs', (req, res) => {
+    res.render('docs', { activePage: 'docs' });
 });
 
 // Handle logout
@@ -129,39 +152,6 @@ app.use((err, req, res, next) => {
     res.status(500).render('error', { 
         error: err.message 
     });
-});
-
-// Route for Messages page
-app.get('/messages', (req, res) => {
-    res.render('messages', { activePage: 'messages' });
-});
-
-// Use the message routes
-app.use('/messages', messageRoutes);
-
-// Route for Tasks page
-app.get('/tasks', (req, res) => {
-    res.render('tasks', { activePage: 'tasks' });
-});
-
-// Route for Calendar page
-app.get('/calendar', (req, res) => {
-    res.render('calendar', { activePage: 'calendar' });
-});
-
-// Route for Reports page
-app.get('/reports', (req, res) => {
-    res.render('reports', { activePage: 'reports' });
-});
-
-// Route for Admin Panel page
-app.get('/admin', (req, res) => {
-    res.render('admin', { activePage: 'admin' });
-});
-
-// Route for Documentation page
-app.get('/docs', (req, res) => {
-    res.render('docs', { activePage: 'docs' });
 });
 
 // Start the server
