@@ -13,3 +13,16 @@ document.querySelector('.sidebar-toggle').addEventListener('click', () => {
     document.querySelector('.sidebar').classList.toggle('collapsed');
     document.querySelector('.main-content').classList.toggle('expanded');
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    }
+});

@@ -20,10 +20,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Passport local authentication strategy
-localAuth(passport);
-
-// Connect to MongoDB
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true 
@@ -32,6 +29,9 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log('Connected to MongoDB');
 })
 .catch(err => console.error('MongoDB connection error:', err));
+
+// Passport local authentication strategy
+localAuth(passport);
 
 // Set up EJS and Express layouts
 app.use(expressLayouts);
@@ -70,112 +70,49 @@ app.use((req, res, next) => {
     next();
 });
 
+// Event Schema
+const eventSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    date: { type: Date, required: true },
+});
+
+const Event = mongoose.model('Event', eventSchema);
+
 // Routes
+app.use('/events', require('./routes/events')); // Make sure to have event routes defined
+
 app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/tasks', tasksRoute); // Use tasksRoute consistently
 
-// Task Schema
-const taskSchema = new mongoose.Schema({
-    description: String,
-    date: { type: Date, default: Date.now }
-});
-
-// Get all tasks
-app.get('/tasks', async (req, res) => {
+// Get all events
+app.get('/events', async (req, res) => {
     try {
-        const tasks = await Task.find();
-        res.json({ tasks });
+        const events = await Event.find();
+        res.json({ events });
     } catch (error) {
-        console.error('Error fetching tasks:', error);
-        res.status(500).json({ message: "Error fetching tasks" });
+        console.error('Error fetching events:', error);
+        res.status(500).json({ message: "Error fetching events" });
     }
 });
 
-// Add a new task
-app.post('/tasks', async (req, res) => {
+// Add a new event
+app.post('/events', async (req, res) => {
     try {
-        const newTask = new Task({ description: req.body.task });
-        const savedTask = await newTask.save();
-        res.json(savedTask);
+        const newEvent = new Event({ title: req.body.title, date: req.body.date });
+        const savedEvent = await newEvent.save();
+        res.json(savedEvent);
     } catch (error) {
-        console.error('Error adding task:', error);
-        res.status(500).json({ message: "Error adding task" });
+        console.error('Error adding event:', error);
+        res.status(500).json({ message: "Error adding event" });
     }
 });
 
-
-// Dashboard route
-app.get('/dashboard', (req, res) => {
-    res.locals.activePage = 'dashboard';
-    res.render('dashboard');
-});
-
-// Users route
-app.get('/users', (req, res) => {
-    res.locals.activePage = 'users';
-    res.render('users');
-});
-
-// Products route
-app.get('/products', (req, res) => {
-    res.locals.activePage = 'products';
-    res.render('products');
-});
-
-// Analytics route
-app.get('/analytics', (req, res) => {
-    res.locals.activePage = 'analytics';
-    res.render('analytics');
-});
-
-// Settings route
-app.get('/settings', (req, res) => {
-    res.locals.activePage = 'settings';
-    res.render('settings');
-});
-
-// Route for Messages page
-app.get('/messages', (req, res) => {
-    res.render('messages', { activePage: 'messages' });
-});
-
-// Use the message routes
-app.use('/messages', messageRoutes);
-
-// Route for Calendar page
-app.get('/calendar', (req, res) => {
-    res.render('calendar', { activePage: 'calendar' });
-});
-
-// Route for Reports page
-app.get('/reports', (req, res) => {
-    res.render('reports', { activePage: 'reports' });
-});
-
-// Route for Admin Panel page
-app.get('/admin', (req, res) => {
-    res.render('admin', { activePage: 'admin' });
-});
-
-// Route for Documentation page
-app.get('/docs', (req, res) => {
-    res.render('docs', { activePage: 'docs' });
-});
-
-// Handle logout
-app.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        res.redirect('/');
-    });
-});
-
-// Handle home route
+// Serve the main HTML page
 app.get('/', (req, res) => {
-    res.render('home');
+    res.sendFile(path.join(__dirname, 'public', 'calendar.html'));
 });
 
 // Error handler

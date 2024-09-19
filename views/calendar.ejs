@@ -11,7 +11,85 @@
     <div class="main-content">
         <h1>Calendar Page</h1>
         <p>Manage your calendar here.</p>
+
+        <!-- Form to add a new event -->
+        <form id="event-form">
+            <label for="event-title">Event Title:</label>
+            <input type="text" id="event-title" required>
+            <label for="event-date">Event Date:</label>
+            <input type="date" id="event-date" required>
+            <button type="submit">Add Event</button>
+        </form>
+
+        <div id="event-list">
+            <h2>Upcoming Events</h2>
+            <div id="events"></div>
+        </div>
     </div>
+
     <script src="/static/js/sidebar-toggle.js"></script>
+    <script>
+        document.getElementById('event-form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const title = document.getElementById('event-title').value;
+            const date = document.getElementById('event-date').value;
+
+            // Send the new event to the server
+            fetch('/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, date }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Add the new event to the list without refreshing the page
+                const eventsDiv = document.getElementById('events');
+                const newEvent = `
+                    <div class="event">
+                        <p>${data.title} on ${new Date(data.date).toLocaleDateString()}</p>
+                    </div>
+                `;
+                eventsDiv.innerHTML += newEvent;
+                document.getElementById('event-form').reset(); // Clear input fields
+            })
+            .catch(err => {
+                console.error('Error adding event:', err);
+            });
+        });
+
+        // Load events on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/events')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const eventsDiv = document.getElementById('events');
+                    if (data.events && data.events.length > 0) {
+                        eventsDiv.innerHTML = data.events.map(event => `
+                            <div class="event">
+                                <p>${event.title} on ${new Date(event.date).toLocaleDateString()}</p>
+                            </div>
+                        `).join('');
+                    } else {
+                        eventsDiv.innerHTML = '<p>No events available.</p>';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching events:', err);
+                });
+        });
+    </script>
 </body>
 </html>
