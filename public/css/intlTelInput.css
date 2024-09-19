@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
-  color: #333;
+  color: #222020;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -57,7 +57,7 @@ input, textarea, select {
   width: 100%;
   padding: 12px;
   margin: 8px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #7793f6;
   border-radius: 4px;
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -168,7 +168,7 @@ body.dark-mode {
 }
 
 .dark-mode button {
-  background-color: #444;
+  background-color: #353030;
   color: white;
 }
 
