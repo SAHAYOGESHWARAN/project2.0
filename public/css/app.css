@@ -28,13 +28,13 @@ p {
 /* Button Styling */
 button {
   background-color: #007bff;
-  color: white;
+  color: #fff;
   padding: 12px 24px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.3s;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
 button:hover {
@@ -49,26 +49,17 @@ button:active {
 }
 
 /* Input Field Styling */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea,
-select {
+input, textarea, select {
   width: 100%;
   padding: 12px;
   margin: 8px 0;
-  display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-textarea:focus,
-select:focus {
+input:focus, textarea:focus, select:focus {
   border-color: #007bff;
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
 }
@@ -80,9 +71,8 @@ textarea {
 /* Form Error Styling */
 .error {
   color: #ff4d4d;
-  outline: 1px solid #ff4d4d;
-  border-radius: 5px;
   padding: 10px;
+  border-radius: 5px;
   background-color: rgba(255, 77, 77, 0.1);
   margin: 8px 0;
 }
@@ -95,8 +85,8 @@ textarea {
 /* Success Styling */
 .success {
   color: #28a745;
-  border-radius: 5px;
   padding: 10px;
+  border-radius: 5px;
   background-color: rgba(40, 167, 69, 0.1);
   margin: 8px 0;
 }
@@ -106,7 +96,7 @@ textarea {
   font-size: 18px;
 }
 
-/* Advanced Toast/Alert Box */
+/* Toast/Alert Box */
 .toast {
   position: fixed;
   top: 20px;
@@ -119,7 +109,7 @@ textarea {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-20px);
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
 }
 
 .toast.show {
@@ -128,14 +118,14 @@ textarea {
   transform: translateY(0);
 }
 
-/* Advanced Flag Styling */
+/* Flag Styling */
 .iti__flag {
   background-image: url("/static/img/flags.png");
   background-size: cover;
   width: 24px;
   height: 16px;
   display: inline-block;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -175,9 +165,8 @@ body.dark-mode {
   color: white;
 }
 
-.dark-mode input[type="text"],
-.dark-mode input[type="email"],
-.dark-mode input[type="password"] {
+.dark-mode input, 
+.dark-mode textarea {
   background-color: #333;
   color: white;
   border-color: #444;
@@ -219,9 +208,8 @@ body.dark-mode {
     padding: 10px;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  input, 
+  textarea {
     padding: 12px;
     font-size: 16px;
   }
