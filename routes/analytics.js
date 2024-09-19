@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // Adjust the path as needed
-const Order = require('../models/Order'); // Example model for product sales
+const User = require('../models/user'); 
+const Order = require('../models/Order'); 
 
 // Get user sign-ups data
 router.get('/user-signups', async (req, res) => {
