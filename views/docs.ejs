@@ -5,13 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .toc {
+            margin-bottom: 20px;
+        }
+        .toc h2 {
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .section {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .collapsible {
+            background-color: #e7f3fe;
+            border: 1px solid #b2d6ff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #b2d6ff;
+            border-radius: 5px;
+            margin-top: 5px;
+            background-color: #f1f8ff;
+        }
+    </style>
 </head>
 <body>
     <%- include('partials/sidebar') %>
     <div class="main-content">
         <h1>Documentation</h1>
-        <p>View project documentation here.</p>
+        <p> documentation here.</p>
+        
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li class="collapsible">Getting Started</li>
+                <div class="content">
+                    <p>Instructions on how to set up the project.</p>
+                </div>
+                <li class="collapsible">API Reference</li>
+                <div class="content">
+                    <p>Details about the API endpoints.</p>
+                </div>
+                <li class="collapsible">User Management</li>
+                <div class="content">
+                    <p>Information on user roles and permissions.</p>
+                </div>
+                <li class="collapsible">Deployment</li>
+                <div class="content">
+                    <p>Guidelines for deploying the application.</p>
+                </div>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Additional Resources</h2>
+            <p>Links to external resources and documentation.</p>
+        </div>
     </div>
+
     <script src="/static/js/sidebar-toggle.js"></script>
+    <script>
+        const coll = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
