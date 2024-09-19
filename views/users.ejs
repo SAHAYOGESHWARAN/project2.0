@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
-    <!-- Correct paths for static assets -->
     <link rel="stylesheet" href="/static/css/styles.css"> <!-- Corrected static path -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- FontAwesome CDN -->
 </head>
 <body>
-    <!-- Include the sidebar with the activePage variable to highlight the active link -->
     <%- include('partials/sidebar', { activePage: 'users' }) %>
 
     <div class="main-content">
@@ -27,11 +25,20 @@
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
 
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="phonenumber">Phone Number:</label>
+                <input type="text" id="phonenumber" name="phonenumber" required>
+
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
 
                 <label for="role">Role:</label>
-                <select id="role" name="role">
+                <select id="role" name="role" required>
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                 </select>
@@ -46,7 +53,9 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Username</th>
                     <th>Email</th>
+                    <th>Phone Number</th>
                     <th>Role</th>
                     <th>Actions</th>
                 </tr>
@@ -63,7 +72,6 @@
         </div>
     </div>
 
-    <!-- Correct JS paths -->
     <script src="/static/js/sidebar-toggle.js"></script>
     <script src="/static/js/users.js"></script> <!-- Users management logic -->
 </body>

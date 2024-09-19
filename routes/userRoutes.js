@@ -1,11 +1,12 @@
+// routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAddUser, addUser } = require('../controllers/userController');
+const { getUsers, addUser } = require('../controllers/userController');
 
-// Route to render the add user form
-router.get('/add', getAddUser);
+// Get all users
+router.get('/', getUsers);
 
-// Route to handle form submission
+// Add a new user
 router.post('/add', addUser);
 
 module.exports = router;
