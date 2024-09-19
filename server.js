@@ -100,6 +100,10 @@ app.get('/analytics', (req, res) => {
 // Use the task routes
 app.use('/tasks', taskRoutes);
 
+
+// Routes
+const tasksRoute = require('./routes/tasks');
+app.use('/tasks', tasksRoute);
 // Settings route
 app.get('/settings', (req, res) => {
     res.locals.activePage = 'settings';
