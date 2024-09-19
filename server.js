@@ -5,12 +5,14 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const userRoute = require('./routes/user');
 const productRoutes = require('./routes/products');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
+const cors = require('cors');
 const tasksRoute = require('./routes/tasks'); // Adjust the path as needed
 
 require('dotenv').config();

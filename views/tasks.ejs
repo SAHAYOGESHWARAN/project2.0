@@ -16,13 +16,13 @@
         <h1 class="sr-only">Tasks Page</h1>
     </header>
 
-    <%- include('partials/sidebar') %>
+    <%- include('partials/sidebar') %> <!-- Include sidebar -->
 
     <main class="main-content">
         <section>
             <h1>Tasks</h1>
             <p>Manage your tasks here.</p>
-            <form id="task-form" action="/tasks" method="POST">
+            <form id="task-form">
                 <label for="task">New Task:</label>
                 <input type="text" id="task" name="task" required>
                 <button type="submit">Add Task</button>
@@ -39,11 +39,13 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        // Handle form submission
         document.getElementById('task-form').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent form submission
+            e.preventDefault(); // Prevent default form submission
 
             const taskDescription = document.getElementById('task').value;
 
+            // Send the new task to the server
             fetch('/tasks', {
                 method: 'POST',
                 headers: {
@@ -51,7 +53,12 @@
                 },
                 body: JSON.stringify({ task: taskDescription }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 // Add the new task to the list without refreshing the page
                 const taskList = document.getElementById('task-list');
@@ -72,7 +79,12 @@
         // Load tasks on page load
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/tasks')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const taskList = document.getElementById('task-list');
                     if (data.tasks && data.tasks.length > 0) {
