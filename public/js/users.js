@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancel-btn');
     const addUserForm = document.getElementById('add-user-form');
     const userForm = document.getElementById('user-form');
+    const userList = document.getElementById('user-list');
     const messageContainer = document.getElementById('message-container');
 
     // Toggle Add User Form
@@ -14,7 +15,40 @@ document.addEventListener('DOMContentLoaded', () => {
         addUserForm.classList.add('hidden');
     });
 
-    // Handle Form Submission
+    // Fetch and display users on page load
+    const loadUsers = async () => {
+        try {
+            const response = await fetch('/users');  // Fetch users from backend
+            const users = await response.json();
+
+            // Clear the user list before adding
+            userList.innerHTML = '';
+
+            users.forEach(user => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${user._id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phonenumber}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
+                    </td>
+                `;
+                userList.appendChild(newRow);
+            });
+        } catch (err) {
+            showMessage('Failed to load users', 'error');
+        }
+    };
+
+    // Call loadUsers on page load
+    loadUsers();
+
+    // Handle Form Submission to add new user
     userForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -34,10 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            // Show success or error message only
+            // Show success or error message
             if (response.status === 201) {
                 showMessage(result.success, 'success');
-                // Optionally, you can reset the form and hide the add user form
+
+                // Reload users
+                loadUsers();
+
+                // Clear form
                 userForm.reset();
                 addUserForm.classList.add('hidden');
             } else {
