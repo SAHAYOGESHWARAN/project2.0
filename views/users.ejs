@@ -13,19 +13,22 @@
     <div class="main-content">
         <h1>Users Management</h1>
 
-        <!-- Success and Error Messages -->
-        <div id="message-container"></div>
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+            <div class="alert alert-error"><%= messages.error %></div>
+        <% } %>
 
-        <!-- User Search and Add Button -->
         <div class="user-actions">
             <input type="text" id="search" placeholder="Search users..." class="search-bar">
             <button id="add-user-btn" class="add-user-btn">Add User</button>
         </div>
 
-        <!-- Add User Form (Initially Hidden) -->
+       
         <div id="add-user-form" class="hidden">
             <h2>Add New User</h2>
-            <form id="user-form">
+            <form action="/users/add" method="POST">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
             
@@ -52,7 +55,6 @@
             </form>
         </div>
 
-        <!-- Users Table -->
         <table class="user-table">
             <thead>
                 <tr>
@@ -66,24 +68,10 @@
                 </tr>
             </thead>
             <tbody id="user-list">
-                <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user._id %></td>
-                        <td><%= user.name %></td>
-                        <td><%= user.username %></td>
-                        <td><%= user.email %></td>
-                        <td><%= user.phonenumber %></td>
-                        <td><%= user.role %></td>
-                        <td>
-                            <button class="edit-btn">Edit</button>
-                            <button class="delete-btn">Delete</button>
-                        </td>
-                    </tr>
-                <% }) %>
+                
             </tbody>
         </table>
 
-        <!-- Pagination (Optional) -->
         <div class="pagination">
             <button class="prev-btn">Previous</button>
             <span class="page-info">Page 1 of 10</span>
