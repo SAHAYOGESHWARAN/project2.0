@@ -180,6 +180,16 @@ app.get('/docs', (req, res) => {
     res.render('docs', { activePage: 'docs' });
 });
 
+// Serve static files (CSS, JS)
+app.use('/static', express.static('public'));
+
+// Use user routes
+app.use('/users', userRoutes);
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the User Management App');
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
