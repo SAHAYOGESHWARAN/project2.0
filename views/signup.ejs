@@ -4,7 +4,7 @@
 <div class="ui very padded text container segment">
   <%- include('./partials/message') %>
   <h3>Signup Form</h3>
-
+  
   <form class="ui form" action="/users/signup" method="POST">
 
     <div class="field">
@@ -21,7 +21,6 @@
     </div>
     <div class="field">
       <label>Phone number</label>
-      <input type="text" id="country-search" placeholder="Search country..." onkeyup="filterCountries()">
       <input type="tel" id="phone" name="phonenumber" required>
       <span id="valid-msg" class="hide success">✓ Valid</span>
       <span id="error-msg" class="hide error"></span>
@@ -30,7 +29,7 @@
       <label>Email</label>
       <input type="email" name="email" placeholder="Email address" required>
     </div>
-
+    
     <button class="ui button" type="submit">Sign up</button>
   </form>
 </div>
@@ -38,26 +37,18 @@
 <!-- Include necessary JS -->
 <script src="/static/js/intlTelInput.js"></script>
 <script src="/static/js/utils.js"></script>
-
 <script>
     const input = document.querySelector("#phone");
     const errorMsg = document.querySelector("#error-msg");
     const validMsg = document.querySelector("#valid-msg");
-
+    
     const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
     const iti = window.intlTelInput(input, {
         separateDialCode: true,
         autoPlaceholder: "aggressive",
         hiddenInput: "phonenumber",
-        utilsScript: "/static/js/utils.js",
-        initialCountry: "auto",
-        geoIpLookup: function(callback) {
-            fetch("https://ipinfo.io?token=<YOUR_TOKEN>")
-              .then(response => response.json())
-              .then(data => callback(data.country))
-              .catch(() => callback("us"));
-        }
+        utilsScript: "/static/js/utils.js" // just for formatting/placeholders etc
     });
 
     var reset = function() {
@@ -67,6 +58,7 @@
       validMsg.classList.add("hide");
     };
 
+    // on blur: validate
     input.addEventListener('blur', function() {
       reset();
       if (input.value.trim()) {
@@ -81,6 +73,7 @@
       }
     });
 
+    // on keyup / change flag: reset
     input.addEventListener('change', reset);
     input.addEventListener('keyup', reset);
 
@@ -91,28 +84,4 @@
         errorMsg.classList.remove("hide");
       }
     });
-
-    function filterCountries() {
-      const input = document.querySelector("#country-search");
-      const iti = window.intlTelInputGlobals.getInstance(document.querySelector("#phone"));
-      const countryList = iti.getCountryData();
-      const filter = input.value.toLowerCase();
-      
-      // Hide all countries initially
-      const countryOptions = document.querySelectorAll(".iti__country");
-      countryOptions.forEach(option => {
-        option.style.display = 'none';
-      });
-
-      // Show countries that match the filter
-      countryList.forEach(country => {
-        const countryName = country.name.toLowerCase();
-        if (countryName.includes(filter)) {
-          const optionElement = document.querySelector(`.iti__country[data-country-code="${country.iso2}"]`);
-          if (optionElement) {
-            optionElement.style.display = '';
-          }
-        }
-      });
-    }
 </script>
