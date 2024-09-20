@@ -3,8 +3,13 @@ const router = express.Router();
 const User = require('../models/User');  // Import User model
 const bcrypt = require('bcryptjs');
 
-// POST /users/add - Add a new user
-router.post('/add', async (req, res) => {
+// GET /users/signup - Display the signup form
+router.get('/signup', (req, res) => {
+    res.render('signup'); // Render a signup view (create signup.ejs in views)
+});
+
+// POST /users/signup - Handle signup form submission
+router.post('/signup', async (req, res) => {
     const { name, username, password, phonenumber, email, role } = req.body;
 
     try {
@@ -30,14 +35,21 @@ router.post('/add', async (req, res) => {
         // Save the user to the database
         await newUser.save();
 
-        // Send success message only (no user details)
+        // Redirect or respond with a success message
         res.status(201).json({ success: 'User added successfully' });
     } catch (error) {
-        // Send error message
         res.status(500).json({ error: 'Server error' });
     }
 });
 
-
+// GET /users - Get all users
+router.get('/', async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
 
 module.exports = router;
