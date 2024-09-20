@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancel-btn');
     const addUserForm = document.getElementById('add-user-form');
     const userForm = document.getElementById('user-form');
-    const userList = document.getElementById('user-list');
     const messageContainer = document.getElementById('message-container');
 
     // Toggle Add User Form
@@ -35,10 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            // Show success message only
+            // Show success or error message only
             if (response.status === 201) {
-                showMessage(result.success, 'success'); // Only display the success message
-                
+                showMessage(result.success, 'success');
                 // Optionally, you can reset the form and hide the add user form
                 userForm.reset();
                 addUserForm.classList.add('hidden');
