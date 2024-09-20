@@ -37,25 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Show success message only
             if (response.status === 201) {
-                showMessage(result.success, 'success'); // Show only success message
-
-                // Add new user to table dynamically
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${result.user._id}</td>
-                    <td>${result.user.name}</td>
-                    <td>${result.user.username}</td>
-                    <td>${result.user.email}</td>
-                    <td>${result.user.phonenumber}</td>
-                    <td>${result.user.role}</td>
-                    <td>
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn">Delete</button>
-                    </td>
-                `;
-                userList.appendChild(newRow);
-
-                // Clear form
+                showMessage(result.success, 'success'); // Only display the success message
+                
+                // Optionally, you can reset the form and hide the add user form
                 userForm.reset();
                 addUserForm.classList.add('hidden');
             } else {
