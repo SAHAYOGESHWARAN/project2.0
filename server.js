@@ -77,9 +77,6 @@ app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
 
-
-
-
 // Set up session
 app.use(session({
     secret: '12345',
