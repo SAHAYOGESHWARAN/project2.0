@@ -1,3 +1,6 @@
+<!-- Include necessary CSS -->
+<link rel="stylesheet" href="/static/css/intlTelInput.css">
+
 <div class="ui very padded text container segment">
   <%- include('./partials/message') %>
   <h3>Signup Form</h3>
@@ -31,6 +34,7 @@
   </form>
 </div>
 
+<!-- Include necessary JS -->
 <script src="/static/js/intlTelInput.js"></script>
 <script>
     const input = document.querySelector("#phone");
@@ -43,7 +47,7 @@
         separateDialCode: true,
         autoPlaceholder: "aggressive",
         hiddenInput: "phonenumber",
-        utilsScript: "/static/js/utils.js?1590403638580" // For formatting/placeholders
+        utilsScript: "/static/js/utils.js" // Ensure the utils script path is correct
     });
 
     var reset = function() {
