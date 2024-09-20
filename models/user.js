@@ -5,39 +5,40 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     username: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     phonenumber: {
         type: String,
-        required: true,
+        required: true
     },
     email: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     verified: {
         type: Boolean,
-        default: false,
+        default: false
     },
     role: {
         type: String,
         enum: ['Admin', 'User'],
-        required: true,
-    },
+        default: 'User', // Set default role to 'User'
+        required: true
+    }
 });
 
 // Hash the password before saving the user
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
 
     try {
@@ -45,16 +46,16 @@ userSchema.pre('save', async function (next) {
         this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (err) {
-        return next(err); // Call next with the error
+        next(err);
     }
 });
 
 // Method to validate the password
-userSchema.methods.validPassword = async function (password) {
+userSchema.methods.validPassword = async function(password) {
     try {
         return await bcrypt.compare(password, this.password);
     } catch (err) {
-        throw err; // Propagate the error
+        throw err;
     }
 };
 

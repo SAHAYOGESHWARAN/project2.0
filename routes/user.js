@@ -1,54 +1,99 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');  // Import User model
-const bcrypt = require('bcryptjs');
+const User = require('../models/User'); // Adjust the path according to your project structure
 
-// GET /users/signup - Display the signup form
-router.get('/signup', (req, res) => {
-    res.render('signup'); // Render a signup view (create signup.ejs in views)
+const { createUser, getSignup } = require('../controllers/signUpController');
+const { authUser, getLogin } = require('../controllers/loginController');
+const { loadVerify, verifyUser, resendCode } = require('../controllers/verifyController');
+const { isLoggedIn, isVerified, notVerified, notLoggedIn } = require('../config/middleware');
+
+// Login route
+router.route('/login')
+    .all(notLoggedIn)
+    .get(getLogin)
+    .post(authUser);
+
+// Signup route
+router.route('/signup')
+    .all(notLoggedIn)
+    .get(getSignup)
+    .post(createUser);
+
+// Logout route
+router.route('/logout')
+    .get((req, res) => {
+        req.logout(err => {
+            if (err) {
+                console.error('Logout error:', err);
+            }
+            res.redirect('/');
+        });
+    });
+
+// Resend verification code route
+router.route('/resend')
+    .all(isLoggedIn, notVerified)
+    .get(resendCode);
+
+// Verify route
+router.route('/verify')
+    .all(isLoggedIn, notVerified)
+    .get(loadVerify)
+    .post(verifyUser);
+
+// Dashboard route
+router.route('/dashboard')
+    .all(isLoggedIn, isVerified)
+    .get((req, res) => {
+        res.render('dashboard');
+    });
+
+// Fetch all users
+router.get('/users', async (req, res) => {
+    const users = await User.find();
+    res.json(users);
 });
 
-// POST /users/signup - Handle signup form submission
-router.post('/signup', async (req, res) => {
-    const { name, username, password, phonenumber, email, role } = req.body;
-
+// Create a new user
+router.post('/users', async (req, res) => {
     try {
-        // Check if email or username already exists
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            return res.status(400).json({ error: 'Username or Email already exists' });
-        }
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create new user
-        const newUser = new User({
-            name,
-            username,
-            password: hashedPassword,
-            phonenumber,
-            email,
-            role
-        });
-
-        // Save the user to the database
+        const { name, email, role } = req.body;
+        const newUser = new User({ name, email, role });
         await newUser.save();
-
-        // Redirect or respond with a success message
-        res.status(201).json({ success: 'User added successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        req.flash('success_msg', 'User added successfully!');
+        res.status(201).json(newUser); // Return the created user as JSON
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Error adding user.');
+        res.status(400).send(); // Send a bad request response
     }
 });
 
-// GET /users - Get all users
-router.get('/', async (req, res) => {
+// Update a user
+router.put('/users/:id', async (req, res) => {
     try {
-        const users = await User.find();
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch users' });
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedUser) {
+            return res.status(404).send(); // Not found
+        }
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(400).send(); // Bad request
+    }
+});
+
+// Delete a user
+router.delete('/users/:id', async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) {
+            return res.status(404).send(); // Not found
+        }
+        res.status(204).send(); // No content
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(); // Internal server error
     }
 });
 
