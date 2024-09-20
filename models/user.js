@@ -35,29 +35,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Hash the password before saving the user
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
-
-// Method to validate the password
-userSchema.methods.validPassword = async function(password) {
-    try {
-        return await bcrypt.compare(password, this.password);
-    } catch (err) {
-        throw err;
-    }
-};
-
-
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = User;

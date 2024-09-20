@@ -61,11 +61,11 @@ router.post('/users', async (req, res) => {
         const newUser = new User({ name, email, role });
         await newUser.save();
         req.flash('success_msg', 'User added successfully!');
-        res.status(201).json(newUser); // Return the created user as JSON
+        res.status(201).json(newUser); 
     } catch (err) {
         console.error(err);
         req.flash('error_msg', 'Error adding user.');
-        res.status(400).send(); // Send a bad request response
+        res.status(400).send();
     }
 });
 
