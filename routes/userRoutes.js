@@ -1,19 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');  // Import User model
+const bcrypt = require('bcryptjs');
 
 // POST /users/add - Add a new user
-router.post('/add', (req, res) => {
-  // Retrieve data from request body
-  const { name, email, password } = req.body;
+router.post('/add', async (req, res) => {
+    const { name, username, password, phonenumber, email, role } = req.body;
 
-  // Add logic to handle the user data, e.g., save to database
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
-  }
+    try {
+        // Check if email or username already exists
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Username or Email already exists' });
+        }
 
-  // Placeholder: Insert into a database here
-  // For now, we'll just simulate success
-  res.status(201).json({ message: 'User added successfully', user: { name, email } });
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new user
+        const newUser = new User({
+            name,
+            username,
+            password: hashedPassword,
+            phonenumber,
+            email,
+            role
+        });
+
+        // Save the user to the database
+        await newUser.save();
+
+        res.status(201).json({ success: 'User added successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 module.exports = router;
