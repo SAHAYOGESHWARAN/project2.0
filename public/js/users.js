@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
 
-            // Show success or error message
+            // Show success message only
             if (response.status === 201) {
-                showMessage('User added successfully', 'success');
+                showMessage(result.success, 'success'); // Show only success message
 
                 // Add new user to table dynamically
                 const newRow = document.createElement('tr');
