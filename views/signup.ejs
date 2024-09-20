@@ -1,46 +1,46 @@
-<!-- Include necessary CSS -->
-<link rel="stylesheet" href="/static/css/intlTelInput.css">
+
+
 
 <div class="ui very padded text container segment">
-  <%- include('./partials/message') %>
-  <h3>Signup Form</h3>
+  <%- include ('./partials/message') %>
+  <h3>
+      Signup Form
+  </h3>
   
   <form class="ui form" action="/users/signup" method="POST">
 
     <div class="field">
       <label>Name</label>
-      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="name" placeholder="name">
     </div>
     <div class="field">
       <label>Username</label>
-      <input type="text" name="username" placeholder="Username" required>
+      <input type="text" name="username" placeholder="username">
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" name="password" placeholder="Password" required>
+      <input type="password" name="password" placeholder="Password">
     </div>
     <div class="field">
       <label>Phone number</label>
-      <input type="tel" id="phone" name="phonenumber" required>
+      <input type="tel" id='phone'>
       <span id="valid-msg" class="hide success">✓ Valid</span>
       <span id="error-msg" class="hide error"></span>
     </div>
     <div class="field">
       <label>Email</label>
-      <input type="email" name="email" placeholder="Email address" required>
+      <input type="email" name="email" placeholder="Email address">
     </div>
     
     <button class="ui button" type="submit">Sign up</button>
   </form>
 </div>
 
-<!-- Include necessary JS -->
 <script src="/static/js/intlTelInput.js"></script>
-<script src="/static/js/utils.js"></script>
 <script>
-    const input = document.querySelector("#phone");
-    const errorMsg = document.querySelector("#error-msg");
-    const validMsg = document.querySelector("#valid-msg");
+    const input = document.querySelector("#phone")
+    const errorMsg = document.querySelector("#error-msg")
+    const validMsg = document.querySelector("#valid-msg")
     
     const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
@@ -48,7 +48,7 @@
         separateDialCode: true,
         autoPlaceholder: "aggressive",
         hiddenInput: "phonenumber",
-        utilsScript: "/static/js/utils.js" // just for formatting/placeholders etc
+        utilsScript: "/static/js/utils.js?1590403638580" // just for formatting/placeholders etc
     });
 
     var reset = function() {
@@ -64,8 +64,10 @@
       if (input.value.trim()) {
         if (iti.isValidNumber()) {
           validMsg.classList.remove("hide");
+
         } else {
           input.classList.add("error");
+          
           var errorCode = iti.getValidationError();
           errorMsg.innerHTML = errorMap[errorCode];
           errorMsg.classList.remove("hide");
@@ -77,11 +79,10 @@
     input.addEventListener('change', reset);
     input.addEventListener('keyup', reset);
 
+
     document.querySelector('.ui.form').addEventListener('submit', (e) => {
-      if (!iti.isValidNumber()) {
-        e.preventDefault();
-        errorMsg.innerHTML = "Please enter a valid phone number.";
-        errorMsg.classList.remove("hide");
+      if(!iti.isValidNumber()){
+        e.preventDefault()
       }
-    });
-</script>
+    })
+</script> 

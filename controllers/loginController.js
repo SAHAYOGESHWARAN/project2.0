@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
-const User = require('../models/user');
+const User = require('../models/User');
 const { sendVerification } = require('../config/twilioLogic');
 
 const getLogin = async (req, res) => {
