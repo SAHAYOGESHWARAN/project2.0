@@ -6,16 +6,14 @@ const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
-const productRoutes = require('./routes/products');
+const productRoutes = require('./routes/productRoutes'); // Correctly reference your product routes
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
-const flashMiddleware = require('./middleware/flashMiddleware');
 const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
-
 
 require('dotenv').config();
 
@@ -84,25 +82,6 @@ app.use('/api', reportRoutes);
 // Frontend Routes
 app.get('/reports', (req, res) => {
     res.render('reports.ejs'); 
-});
-
-// Set up session
-app.use(session({
-    secret: '12345',
-    resave: false,
-    saveUninitialized: true
-}));
-
-// Initialize flash
-app.use(flash());
-
-// Middleware to pass flash messages to templates
-app.use((req, res, next) => {
-    res.locals.messages = {
-        success: req.flash('success_msg'),
-        error: req.flash('error_msg')
-    };
-    next();
 });
 
 // Dashboard route
@@ -191,13 +170,6 @@ app.get('/docs', (req, res) => {
 
 // Serve static files (CSS, JS)
 app.use('/static', express.static('public'));
-
-// Use user routes
-app.use('/users', userRoutes);
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the User Management App');
-});
 
 // Start the server
 app.listen(port, () => {
