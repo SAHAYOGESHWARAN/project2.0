@@ -5,96 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .product-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .product-table th, .product-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        .product-table th {
-            background-color: #f4f4f4;
-        }
-        .edit-btn, .delete-btn {
-            cursor: pointer;
-            padding: 5px 10px;
-            margin: 0 5px;
-            border: none;
-            border-radius: 3px;
-        }
-        .edit-btn {
-            background-color: #007BFF;
-            color: white;
-        }
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
-    <%- include('partials/sidebar') %> 
+    <%- include('partials/sidebar') %>
 
     <div class="main-content">
         <h1>Products Management</h1>
 
-        <form id="addProductForm" method="POST" action="/products/add" enctype="multipart/form-data">
+        <form id="addProductForm" method="POST" action="/products/add">
             <h2>Add New Product</h2>
             <input type="text" name="productName" placeholder="Product Name" required>
             <input type="number" name="productPrice" placeholder="Price" required step="0.01">
             <input type="text" name="productCategory" placeholder="Category" required>
-            <input type="file" name="productImage" accept="image/*" required> <!-- New input for image -->
+            <input type="text" name="productImage" placeholder="Image URL" required>
             <button type="submit">Add Product</button>
         </form>
-        <td>
-            <img src="<%= product.imageUrl %>" alt="<%= product.name %>" style="width: 50px; height: auto;">
-        </td>
-        
 
         <div class="product-list">
             <h2>Product List</h2>
@@ -105,24 +30,28 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Category</th>
+                        <th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (products.length === 0) { %>
                         <tr>
-                            <td colspan="5">No products found</td>
+                            <td colspan="6">No products found</td>
                         </tr>
                     <% } else { %>
                         <% products.forEach(product => { %>
                             <tr>
-                                <td><%= product.id %></td>
+                                <td><%= product._id %></td>
                                 <td><%= product.name %></td>
                                 <td><%= product.price.toFixed(2) %></td>
                                 <td><%= product.category %></td>
                                 <td>
-                                    <button class="edit-btn" onclick="openEditModal(<%= product.id %>, '<%= product.name %>', <%= product.price %>, '<%= product.category %>')">Edit</button>
-                                    <button class="delete-btn" onclick="confirmDelete(<%= product.id %>)">Delete</button>
+                                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" style="width: 50px; height: auto;">
+                                </td>
+                                <td>
+                                    <button class="edit-btn" onclick="openEditModal('<%= product._id %>', '<%= product.name %>', <%= product.price %>, '<%= product.category %>', '<%= product.imageUrl %>')">Edit</button>
+                                    <button class="delete-btn" onclick="confirmDelete('<%= product._id %>')">Delete</button>
                                 </td>
                             </tr>
                         <% }) %>
@@ -132,22 +61,11 @@
         </div>
     </div>
 
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Edit Product</h2>
-            <form id="editProductForm" method="POST">
-                <input type="hidden" name="productId" id="editProductId">
-                <input type="text" name="productName" id="editProductName" placeholder="Product Name" required>
-                <input type="number" name="productPrice" id="editProductPrice" placeholder="Price" required step="0.01">
-                <input type="text" name="productCategory" id="editProductCategory" placeholder="Category" required>
-                <button type="submit">Update Product</button>
-            </form>
-        </div>
-    </div>
-
     <script src="/static/js/sidebar-toggle.js"></script>
-    <script src="/static/js/products.js"></script> 
+    <script src="/static/js/products.js"></script>
+</body>
+</html>
+
 
     <script>
         function confirmDelete(productId) {
