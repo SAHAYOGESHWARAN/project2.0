@@ -130,6 +130,12 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Route for Reports page
+app.get('/reports', (req, res) => {
+    res.render('reports', { activePage: 'reports' }); 
+});
+
+
 // Use the message routes
 app.use('/messages', messageRoutes);
 
