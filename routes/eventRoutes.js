@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Event = require('../models/eventModel');
-const calendar = require('../../config/googleConfig');
+const calendar = require('../config/googleConfig');
 
 // Save event to MongoDB and Google Calendar
 router.post('/events', async (req, res) => {
