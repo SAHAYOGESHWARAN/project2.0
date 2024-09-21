@@ -9,6 +9,7 @@
   "author": "saha",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1691.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "connect-flash": "^0.1.1",
@@ -23,6 +24,7 @@
     "intl-tel-input": "^17.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.13.2",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.5.3",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
