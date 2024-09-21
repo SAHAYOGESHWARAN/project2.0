@@ -14,6 +14,7 @@ const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
 const flashMiddleware = require('./middleware/flashMiddleware');
 const eventRoutes = require('./routes/eventRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 
 require('dotenv').config();
@@ -78,6 +79,12 @@ app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
 app.use(eventRoutes);
+app.use('/api', reportRoutes);
+
+// Frontend Routes
+app.get('/reports', (req, res) => {
+    res.render('reports.ejs'); 
+});
 
 // Set up session
 app.use(session({
