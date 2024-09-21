@@ -68,8 +68,7 @@
             font-size: 28px;
             font-weight: bold;
         }
-        .close:hover,
-        .close:focus {
+        .close:hover, .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -100,12 +99,12 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Category</th>
-                        <th>Image</th> <!-- New Image Column -->
+                        <th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (products.length === 0) { %>
+                    <% if (products && products.length === 0) { %>
                         <tr>
                             <td colspan="6">No products found</td>
                         </tr>
@@ -116,7 +115,7 @@
                                 <td><%= product.name %></td>
                                 <td><%= product.price.toFixed(2) %></td>
                                 <td><%= product.category %></td>
-                                <td><img src="<%= product.imageUrl %>" alt="Product Image" width="100"></td> <!-- Display Image -->
+                                <td><img src="<%= product.imageUrl %>" alt="Product Image" width="100"></td>
                                 <td>
                                     <button class="edit-btn" onclick="openEditModal(<%= product.id %>, '<%= product.name %>', <%= product.price %>, '<%= product.category %>')">Edit</button>
                                     <button class="delete-btn" onclick="confirmDelete(<%= product.id %>)">Delete</button>
@@ -144,7 +143,7 @@
     </div>
 
     <script src="/static/js/sidebar-toggle.js"></script>
-    <script src="/static/js/products.js"></script> 
+    <script src="/static/js/products.js"></script>
 
     <script>
         function confirmDelete(productId) {
@@ -174,7 +173,6 @@
             document.getElementById('editModal').style.display = 'none';
         }
 
-        // Close the modal when clicking outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('editModal');
             if (event.target == modal) {
