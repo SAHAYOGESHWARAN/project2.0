@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <title>Users Management</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -13,19 +13,19 @@
     <div class="main-content">
         <h1>Users Management</h1>
 
-        <% if (messages.success) { %>
+        <% if (messages && messages.success) { %>
             <div class="alert alert-success"><%= messages.success %></div>
         <% } %>
-        <% if (messages.error) { %>
+        <% if (messages && messages.error) { %>
             <div class="alert alert-error"><%= messages.error %></div>
         <% } %>
 
         <div class="user-actions">
             <input type="text" id="search" placeholder="Search users..." class="search-bar">
             <button id="add-user-btn" class="add-user-btn">Search User</button>
+            <button id="show-add-user-form" class="add-user-btn">Add User</button>
         </div>
 
-       
         <div id="add-user-form" class="hidden">
             <h2>Add New User</h2>
             <form action="/users/add" method="POST">
@@ -54,6 +54,38 @@
                 <button type="button" id="cancel-btn" class="cancel-btn">Cancel</button>
             </form>
         </div>
+
+        <div class="user-list">
+            <h2>User List</h2>
+            <!-- Your user table goes here -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example of user data; replace with actual data -->
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.name %></td>
+                            <td><%= user.username %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.role %></td>
+                            <td>
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="/static/js/sidebar-toggle.js"></script>
     <script src="/static/js/users.js"></script>

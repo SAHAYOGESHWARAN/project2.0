@@ -1,30 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); 
+const User = require('../models/User'); // Adjust according to your User model path
 
-router.post('/signup', async (req, res) => {
-    const { name, username, password, phonenumber, email, role = 'User' } = req.body; // Default role to 'User'
+// Get users
+router.get('/', async (req, res) => {
+    const messages = {
+        success: req.flash('success_msg'),
+        error: req.flash('error_msg')
+    };
 
     try {
-        // Validate required fields
-        if (!name || !username || !password || !phonenumber || !email) {
-            return res.status(400).json({ error: "All fields are required" });
-        }
-
-        // Check for existing user
-        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-        if (existingUser) {
-            return res.status(400).json({ error: "Username or email already exists" });
-        }
-
-        // Create a new user
-        const newUser = new User({ name, username, password, phonenumber, email, role });
-        await newUser.save();
-
-        res.status(201).json({ message: "User registered successfully" });
+        const users = await User.find(); // Fetch users from the database
+        res.render('users', { messages, users });
     } catch (error) {
-        console.error('Signup error:', error);
-        res.status(500).json({ error: "Server error", details: error.message }); // Provide more error details
+        console.error('Error fetching users:', error);
+        req.flash('error_msg', 'Failed to fetch users.');
+        res.redirect('/users');
     }
 });
 
