@@ -6,7 +6,7 @@ const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
-const productRoutes = require('./routes/productRoutes'); // Correctly reference your product routes
+const productRoutes = require('./routes/productRoutes');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
 const { localAuth } = require('./config/passportLogic');
@@ -76,15 +76,10 @@ app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
-app.use(eventRoutes);
+app.use('/events', eventRoutes); // Add a prefix for event routes
 app.use('/api', reportRoutes);
 
 // Frontend Routes
-app.get('/reports', (req, res) => {
-    res.render('reports.ejs'); 
-});
-
-// Dashboard route
 app.get('/dashboard', (req, res) => {
     res.locals.activePage = 'dashboard';
     res.render('dashboard');
@@ -135,41 +130,25 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Route for Messages page
-app.get('/messages', (req, res) => {
-    res.render('messages', { activePage: 'messages' });
-});
-
 // Use the message routes
 app.use('/messages', messageRoutes);
 
-// Route for Tasks page
+// Additional Frontend Routes
+app.get('/messages', (req, res) => {
+    res.render('messages', { activePage: 'messages' });
+});
 app.get('/tasks', (req, res) => {
     res.render('tasks', { activePage: 'tasks' });
 });
-
-// Route for Calendar page
 app.get('/calendar', (req, res) => {
     res.render('calendar', { activePage: 'calendar' });
 });
-
-// Route for Reports page
-app.get('/reports', (req, res) => {
-    res.render('reports', { activePage: 'reports' });
-});
-
-// Route for Admin Panel page
 app.get('/admin', (req, res) => {
     res.render('admin', { activePage: 'admin' });
 });
-
-// Route for Documentation page
 app.get('/docs', (req, res) => {
     res.render('docs', { activePage: 'docs' });
 });
-
-// Serve static files (CSS, JS)
-app.use('/static', express.static('public'));
 
 // Start the server
 app.listen(port, () => {

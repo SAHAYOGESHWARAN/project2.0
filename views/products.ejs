@@ -83,13 +83,18 @@
     <div class="main-content">
         <h1>Products Management</h1>
 
-        <form id="addProductForm" method="POST" action="/products/add">
+        <form id="addProductForm" method="POST" action="/products/add" enctype="multipart/form-data">
             <h2>Add New Product</h2>
             <input type="text" name="productName" placeholder="Product Name" required>
             <input type="number" name="productPrice" placeholder="Price" required step="0.01">
             <input type="text" name="productCategory" placeholder="Category" required>
+            <input type="file" name="productImage" accept="image/*" required> <!-- New input for image -->
             <button type="submit">Add Product</button>
         </form>
+        <td>
+            <img src="<%= product.imageUrl %>" alt="<%= product.name %>" style="width: 50px; height: auto;">
+        </td>
+        
 
         <div class="product-list">
             <h2>Product List</h2>
