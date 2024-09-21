@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <script src="/static/js/sidebar-toggle.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -160,42 +160,138 @@
     </script>
 
     <style>
-       
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
+    /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background: #333;
+    color: white;
+    position: fixed;
+    padding: 20px;
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+}
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.sidebar a:hover {
+    background: #575757;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 270px; /* Adjusted for sidebar width */
+    padding: 20px;
+}
+
+/* User management styles */
+.user-management {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left; /* Changed to left for better readability */
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Button styles */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 100px; /* Adjusted for better spacing */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px; /* Set a smaller width for the modal */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Close button styles */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Alert styles */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+
     </style>
 </body>
 </html>
