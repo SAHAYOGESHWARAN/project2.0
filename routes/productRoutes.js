@@ -1,16 +1,15 @@
-
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product'); // Make sure to import your Product model
+const Product = require('../models/Product'); // Import your Product model
 
 // Route to get all products
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => { // Change to router.get
     try {
-        const products = await Product.find(); // Fetch products from the database
-        res.render('products', { products }); // Pass the products to the view
+        const products = await Product.find(); // Fetch products from your MongoDB
+        res.render('products', { products: products }); // Pass products to the view
     } catch (error) {
-        console.error(error); // Log the error for debugging
-        res.status(500).send('Server Error'); // Send a 500 response if an error occurs
+        console.error(error);
+        res.status(500).send('Server Error');
     }
 });
 
