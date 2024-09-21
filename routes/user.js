@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // Adjust the path according to your project structure
-
+const userController = require('../controllers/userController');
 const { createUser, getSignup } = require('../controllers/signUpController');
 const { authUser, getLogin } = require('../controllers/loginController');
 const { loadVerify, verifyUser, resendCode } = require('../controllers/verifyController');
@@ -96,5 +96,8 @@ router.delete('/users/:id', async (req, res) => {
         res.status(500).send(); // Internal server error
     }
 });
+
+
+
 
 module.exports = router;
