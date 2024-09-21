@@ -13,6 +13,7 @@ const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
 const flashMiddleware = require('./middleware/flashMiddleware');
+const eventRoutes = require('./routes/eventRoutes');
 
 
 require('dotenv').config();
@@ -76,6 +77,7 @@ app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
+app.use(eventRoutes);
 
 // Set up session
 app.use(session({
