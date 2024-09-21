@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,6 @@
         <h1>Calendar Page</h1>
         <p>Manage your calendar here.</p>
 
-       
         <form id="event-form">
             <label for="event-title">Event Title:</label>
             <input type="text" id="event-title" required>
@@ -35,7 +35,6 @@
             const title = document.getElementById('event-title').value;
             const date = document.getElementById('event-date').value;
 
-            // Send the new event to the server
             fetch('/events', {
                 method: 'POST',
                 headers: {
@@ -50,7 +49,6 @@
                 return response.json();
             })
             .then(data => {
-                // Add the new event to the list without refreshing the page
                 const eventsDiv = document.getElementById('events');
                 const newEvent = `
                     <div class="event">
@@ -58,14 +56,13 @@
                     </div>
                 `;
                 eventsDiv.innerHTML += newEvent;
-                document.getElementById('event-form').reset(); // Clear input fields
+                document.getElementById('event-form').reset(); 
             })
             .catch(err => {
                 console.error('Error adding event:', err);
             });
         });
 
-        // Load events on page load
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/events')
                 .then(response => {
