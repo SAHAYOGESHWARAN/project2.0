@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
-
 <body>
     <header>
-        <h1 class="sr-only">Tasks Page</h1>
+        <h1>Tasks</h1>
     </header>
-
-    <%- include('partials/sidebar') %> 
 
     <main class="main-content">
         <section>
             <h1>Tasks</h1>
-            <p>Manage your tasks here</p>
+            <p>Manage your tasks here.</p>
             <form id="task-form">
                 <label for="task">New Task:</label>
                 <input type="text" id="task" name="task" required>
@@ -31,74 +25,6 @@
         </section>
     </main>
 
-    <script src="/static/js/sidebar-toggle.js"></script>
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Handle form submission
-        document.getElementById('task-form').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent default form submission
-
-            const taskDescription = document.getElementById('task').value;
-
-            // Send the new task to the server
-            fetch('/tasks', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ task: taskDescription }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Add the new task to the list without refreshing the page
-                const taskList = document.getElementById('task-list');
-                const newTask = `
-                    <div class="task">
-                        <p>${data.description}</p>
-                        <small>Created on ${new Date(data.date).toLocaleString()}</small>
-                    </div>
-                `;
-                taskList.innerHTML += newTask;
-                document.getElementById('task').value = ''; // Clear input
-            })
-            .catch(err => {
-                console.error('Error adding task:', err);
-            });
-        });
-
-        // Load tasks on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/tasks')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const taskList = document.getElementById('task-list');
-                    if (data.tasks && data.tasks.length > 0) {
-                        taskList.innerHTML = data.tasks.map(task => `
-                            <div class="task">
-                                <p>${task.description}</p>
-                                <small>Created on ${new Date(task.date).toLocaleString()}</small>
-                            </div>
-                        `).join('');
-                    } else {
-                        taskList.innerHTML = '<p>No tasks available.</p>';
-                    }
-                })
-                .catch(err => {
-                    console.error('Error fetching tasks:', err);
-                });
-        });
-    </script>
-    
+    <script src="/static/js/tasks.js"></script> <!-- Link to your JavaScript file -->
 </body>
 </html>

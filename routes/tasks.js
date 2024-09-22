@@ -1,31 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const Task = require('../models/Task');
-// Add a new task
-router.post('/', async (req, res) => {
-    const { title, description, status } = req.body;
+const Task = require('../models/Task'); // Adjust the path as needed
 
-    // Validate the incoming request
-    if (!title || !description || !status) {
-        return res.status(400).json({ error: 'Please provide all required fields' });
-    }
-
+// Get all tasks
+router.get('/', async (req, res) => {
     try {
-        // Create a new Task instance
-        const newTask = new Task({
-            title,
-            description,
-            status
-        });
-
-        // Save the task to the database
-        await newTask.save();
-
-        // Send success response with the saved task
-        res.status(201).json(newTask);
+        const tasks = await Task.find();
+        res.json({ tasks });
     } catch (err) {
-        console.error('Error saving task:', err);
-        res.status(500).json({ error: 'Failed to create task' });
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// Create a new task
+router.post('/', async (req, res) => {
+    const task = new Task({
+        description: req.body.task,
+        date: new Date(),
+    });
+    try {
+        const savedTask = await task.save();
+        res.status(201).json(savedTask);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
