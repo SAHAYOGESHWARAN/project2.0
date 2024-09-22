@@ -1,18 +1,45 @@
-// In your productRoutes.js or wherever your products routes are defined
-
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product'); // Adjust the path to your Product model
+const Product = require('../models/Product');
 
-// Route to render the products page
+// Add a new product
+router.post('/add', async (req, res) => {
+    try {
+        const { productName, productPrice, productCategory } = req.body;
+
+        // File upload handling
+        let productImage = req.files ? req.files.productImage : null;
+        const imageUrl = `/uploads/${productImage.name}`;
+
+        // Save product image
+        if (productImage) {
+            await productImage.mv(`./uploads/${productImage.name}`);
+        }
+
+        const newProduct = new Product({
+            name: productName,
+            price: productPrice,
+            category: productCategory,
+            imageUrl,
+        });
+
+        await newProduct.save();
+        req.flash('success_msg', 'Product added successfully');
+        res.redirect('/products');
+    } catch (error) {
+        req.flash('error_msg', 'Error adding product');
+        res.redirect('/products');
+    }
+});
+
+// List products
 router.get('/', async (req, res) => {
     try {
-        // Fetch products from the database
-        const products = await Product.find(); // Fetch all products
-        res.render('products', { products }); // Pass products to the view
+        const products = await Product.find();
+        res.render('products', { products });
     } catch (error) {
-        console.error('Error fetching products:', error);
-        res.status(500).render('error', { error: 'Error fetching products' });
+        req.flash('error_msg', 'Error retrieving products');
+        res.render('products', { products: [] });
     }
 });
 

@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const dotenv = require('dotenv');
+const fileUpload = require('express-fileupload');
 
 const userRoute = require('./routes/user');
 const productRoutes = require('./routes/productRoutes');
@@ -42,11 +43,16 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Set up static folders
 app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('uploads')); // Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
 
 // Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// File upload middleware
+app.use(fileUpload({
+    createParentPath: true,  // Automatically create directories if they don't exist
+}));
 
 // Session middleware
 app.use(session({
@@ -155,4 +161,3 @@ app.get('/docs', (req, res) => {
 app.listen(port, () => {
     console.log(`App is running on http://localhost:${port}`);
 });
-    
