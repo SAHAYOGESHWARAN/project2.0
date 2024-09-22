@@ -98,9 +98,55 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard');
 });
 
-// Additional frontend routes
+app.get('/users', (req, res) => {
+    res.locals.activePage = 'users';
+    res.render('users');
+});
+
+app.get('/products', (req, res) => {
+    res.locals.activePage = 'products';
+    res.render('products');
+});
+
+app.get('/analytics', (req, res) => {
+    res.locals.activePage = 'analytics';
+    res.render('analytics');
+});
+
+app.get('/settings', (req, res) => {
+    res.locals.activePage = 'settings';
+    res.render('settings');
+});
+
+// Handle logout
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
+});
+
+// Handle home route
 app.get('/', (req, res) => {
     res.render('home');
+});
+
+// Route for Reports page
+app.get('/reports', (req, res) => {
+    res.render('reports', { activePage: 'reports' });
+});
+
+// Additional Frontend Routes
+app.get('/calendar', (req, res) => {
+    res.render('calendar', { activePage: 'calendar' });
+});
+
+app.get('/admin', (req, res) => {
+    res.render('admin', { activePage: 'admin' });
+});
+
+app.get('/docs', (req, res) => {
+    res.render('docs', { activePage: 'docs' });
 });
 
 // Error handler
