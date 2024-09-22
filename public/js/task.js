@@ -1,4 +1,3 @@
-// public/js/tasks.js
 document.getElementById('task-form').addEventListener('submit', function (e) {
     e.preventDefault();
     const taskDescription = document.getElementById('task').value;
