@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages Management</title>
     <link rel="stylesheet" href="/static/css/styles.css">
-    <!-- Favicon -->
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
 <body>
@@ -53,22 +50,18 @@
 
     <!-- Scripts -->
     <script src="/static/js/sidebar-toggle.js"></script>
-    <!-- Update the year dynamically in footer -->
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
-    <!-- AJAX script for dynamic content loading -->
-    <script>
+        // Dynamically load messages via API
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/api/messages')
                 .then(response => response.json())
                 .then(data => {
                     const messageList = document.getElementById('message-list');
                     messageList.innerHTML = data.messages.map(message => `
-                        <div class="message">
+                        <li>
                             <p>${message.content}</p>
-                            <small>Sent on ${new Date(message.date).toLocaleString()}</small>
-                        </div>
+                            <small>Sent on ${new Date(message.timestamp).toLocaleString()}</small>
+                        </li>
                     `).join('');
                 });
         });

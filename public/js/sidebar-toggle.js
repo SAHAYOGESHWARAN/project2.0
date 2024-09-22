@@ -26,3 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Sidebar toggle functionality (example script)
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
+});
