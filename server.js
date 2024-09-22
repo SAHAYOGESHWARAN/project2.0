@@ -14,8 +14,7 @@ const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
-const messagesController = require('./controllers/messageController'); 
-
+const messagesController = require('./controllers/messageController');
 
 require('dotenv').config();
 
@@ -26,14 +25,14 @@ const port = process.env.PORT || 8000;
 localAuth(passport);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true 
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
-.then(() => {
-    console.log('Connected to MongoDB');
-})
-.catch(err => console.error('MongoDB connection error:', err));
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Set up EJS and Express layouts
 app.use(expressLayouts);
@@ -44,9 +43,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Session middleware
-app.use(session({ 
+app.use(session({
     secret: process.env.SESSION_SECRET || 'please log me in',
-    resave: false, 
+    resave: false,
     saveUninitialized: false,
     cookie: { secure: false }
 }));
@@ -67,8 +66,8 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
-    res.locals.user = req.user || null; 
-    res.locals.activePage = ''; 
+    res.locals.user = req.user || null;
+    res.locals.activePage = '';
     next();
 });
 
@@ -78,13 +77,12 @@ app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
-app.use('/events', eventRoutes); 
+app.use('/events', eventRoutes);
 app.use('/api', reportRoutes);
-app.use('/messages', messageRoutes);// Combined usage for message routes
 
-// Routes for messages
-app.get('/messages', messagesController.getMessages); // Controller for handling messages
-app.post('/messages/add', messagesController.addMessage); // Controller to add new messages
+// Messages routes (using messageController)
+app.get('/messages', messagesController.getMessages);
+app.post('/messages/add', messagesController.addMessage);
 
 // Static files
 app.use('/static', express.static('public'));
@@ -131,8 +129,8 @@ app.get('/', (req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).render('error', { 
-        error: err.message 
+    res.status(500).render('error', {
+        error: err.message
     });
 });
 

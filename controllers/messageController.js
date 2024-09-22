@@ -6,7 +6,7 @@ exports.getMessages = async (req, res) => {
         res.render('messages', { messages, msg: {} });  // Pass an empty `msg` object initially
     } catch (error) {
         console.error(error);
-        res.render('messages', { messages: [], msg: { error: 'Failed to fetch messages.' } });
+        res.render('messages ', { messages: [], msg: { error: 'Failed to fetch messages.' } });
     }
 };
 

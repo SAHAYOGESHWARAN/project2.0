@@ -38,13 +38,19 @@
 
             <!-- Displaying message list -->
             <h2>Message List</h2>
-            <ul id="message-list">
-                <% messages.forEach(message => { %>
-                    <li>
-                        <%= message.content %> - <%= message.timestamp.toISOString() %>
-                    </li>
-                <% }); %>
-            </ul>
+
+            <!-- Check if there are messages to display -->
+            <% if (messages.length > 0) { %>
+                <ul id="message-list">
+                    <% messages.forEach(message => { %>
+                        <li>
+                            <%= message.content %> - <%= message.timestamp.toISOString() %>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No messages available yet.</p> <!-- Display this when no messages -->
+            <% } %>
         </section>
     </main>
 
@@ -57,12 +63,16 @@
                 .then(response => response.json())
                 .then(data => {
                     const messageList = document.getElementById('message-list');
-                    messageList.innerHTML = data.messages.map(message => `
-                        <li>
-                            <p>${message.content}</p>
-                            <small>Sent on ${new Date(message.timestamp).toLocaleString()}</small>
-                        </li>
-                    `).join('');
+                    if (data.messages.length > 0) {
+                        messageList.innerHTML = data.messages.map(message => `
+                            <li>
+                                <p>${message.content}</p>
+                                <small>Sent on ${new Date(message.timestamp).toLocaleString()}</small>
+                            </li>
+                        `).join('');
+                    } else {
+                        messageList.innerHTML = '<p>No messages available yet.</p>'; // Fallback if no messages
+                    }
                 });
         });
     </script>
