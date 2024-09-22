@@ -119,7 +119,7 @@ app.get('/settings', (req, res) => {
 });
 
 // Handle logout
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
         res.redirect('/');
