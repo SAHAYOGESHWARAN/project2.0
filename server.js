@@ -1,22 +1,23 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
-const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
 const userRoute = require('./routes/user');
 const productRoutes = require('./routes/productRoutes');
 const analyticsRoutes = require('./routes/analytics');
 const settingsRoutes = require('./routes/settings');
-const { localAuth } = require('./config/passportLogic');
 const messageRoutes = require('./routes/messages');
-const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const messagesController = require('./controllers/messageController');
+const { localAuth } = require('./config/passportLogic');
 
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -27,7 +28,7 @@ localAuth(passport);
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
 })
     .then(() => {
         console.log('Connected to MongoDB');
@@ -39,20 +40,21 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Set up static folder
+// Set up static folders
 app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static('uploads')); // Serve uploaded files
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET || 'please log me in',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { secure: false }, // Set to true if using HTTPS
 }));
-
-// Body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Initialize passport and session handling
 app.use(passport.initialize());
@@ -71,26 +73,17 @@ app.use((req, res, next) => {
     next();
 });
 
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads')); // Serve uploaded files
-
 // Routes
 app.use('/users', userRoute);
 app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
-app.use('/users', userRoutes);
 app.use('/events', eventRoutes);
 app.use('/api', reportRoutes);
 
 // Messages routes (using messageController)
 app.get('/messages', messagesController.getMessages);
 app.post('/messages/add', messagesController.addMessage);
-
-// Static files
-app.use('/static', express.static('public'));
 
 // Frontend Routes
 app.get('/dashboard', (req, res) => {
@@ -135,7 +128,7 @@ app.get('/', (req, res) => {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {
-        error: err.message
+        error: err.message,
     });
 });
 
@@ -160,5 +153,5 @@ app.get('/docs', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
+    console.log(`App is running on http://localhost:${port}`);
 });
