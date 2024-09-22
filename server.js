@@ -16,6 +16,7 @@ const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const messagesController = require('./controllers/messageController'); 
 
+
 require('dotenv').config();
 
 const app = express();
@@ -79,7 +80,7 @@ app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
 app.use('/events', eventRoutes); 
 app.use('/api', reportRoutes);
-app.use('/', messageRoutes); // Combined usage for message routes
+app.use('/messages', messageRoutes);// Combined usage for message routes
 
 // Routes for messages
 app.get('/messages', messagesController.getMessages); // Controller for handling messages
