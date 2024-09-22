@@ -1,27 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Message = require('../models/Message');
+const Message = require('../models/Message'); // Assuming you have a Message model
 
-// GET all messages
-router.get('/', async (req, res) => {
-    try {
-        const messages = await Message.find();
-        res.json({ messages });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch messages' });
-    }
+// Route to render messages management page
+router.get('/', (req, res) => {
+    Message.find({}, (err, messages) => {
+        if (err) {
+            req.flash('error', 'Error fetching messages');
+            return res.redirect('/');
+        }
+        res.render('messages', {
+            messages: messages,
+            msg: {
+                success: req.flash('success'),
+                error: req.flash('error')
+            }
+        });
+    });
 });
 
-// POST a new message
-router.post('/', async (req, res) => {
-    try {
-        const { message } = req.body;
-        const newMessage = new Message({ content: message });
-        await newMessage.save();
-        res.redirect('/messages'); 
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to save message' });
-    }
+// Route to handle adding a new message
+router.post('/add', (req, res) => {
+    const newMessage = new Message({
+        content: req.body.content,
+        timestamp: new Date()
+    });
+
+    newMessage.save((err) => {
+        if (err) {
+            req.flash('error', 'Failed to send the message');
+            return res.redirect('/messages');
+        }
+        req.flash('success', 'Message sent successfully!');
+        res.redirect('/messages');
+    });
 });
 
 module.exports = router;

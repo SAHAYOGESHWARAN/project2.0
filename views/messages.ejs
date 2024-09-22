@@ -22,10 +22,10 @@
             <p>Manage your messages here.</p>
 
             <!-- Alert for success or error messages -->
-            <% if (msg.success) { %>
+            <% if (msg.success && msg.success.length > 0) { %>
                 <div class="alert alert-success"><%= msg.success %></div>
             <% } %>
-            <% if (msg.error) { %>
+            <% if (msg.error && msg.error.length > 0) { %>
                 <div class="alert alert-danger"><%= msg.error %></div>
             <% } %>
 
