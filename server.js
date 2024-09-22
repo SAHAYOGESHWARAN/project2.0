@@ -14,6 +14,7 @@ const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const messagesController = require('./controllers/messageController'); 
 
 require('dotenv').config();
 
@@ -76,8 +77,16 @@ app.use('/products', productRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/settings', settingsRoutes);
 app.use('/users', userRoutes);
-app.use('/events', eventRoutes); // Add a prefix for event routes
+app.use('/events', eventRoutes); 
 app.use('/api', reportRoutes);
+app.use('/', messageRoutes); // Combined usage for message routes
+
+// Routes for messages
+app.get('/messages', messagesController.getMessages); // Controller for handling messages
+app.post('/messages/add', messagesController.addMessage); // Controller to add new messages
+
+// Static files
+app.use('/static', express.static('public'));
 
 // Frontend Routes
 app.get('/dashboard', (req, res) => {
@@ -85,25 +94,21 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard');
 });
 
-// Users route
 app.get('/users', (req, res) => {
     res.locals.activePage = 'users';
     res.render('users');
 });
 
-// Products route
 app.get('/products', (req, res) => {
     res.locals.activePage = 'products';
     res.render('products');
 });
 
-// Analytics route
 app.get('/analytics', (req, res) => {
     res.locals.activePage = 'analytics';
     res.render('analytics');
 });
 
-// Settings route
 app.get('/settings', (req, res) => {
     res.locals.activePage = 'settings';
     res.render('settings');
@@ -132,17 +137,10 @@ app.use((err, req, res, next) => {
 
 // Route for Reports page
 app.get('/reports', (req, res) => {
-    res.render('reports', { activePage: 'reports' }); 
+    res.render('reports', { activePage: 'reports' });
 });
-
-
-// Use the message routes
-app.use('/messages', messageRoutes);
 
 // Additional Frontend Routes
-app.get('/messages', (req, res) => {
-    res.render('messages', { activePage: 'messages' });
-});
 app.get('/tasks', (req, res) => {
     res.render('tasks', { activePage: 'tasks' });
 });

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages</title>
+    <title>Messages Management</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <!-- Favicon -->
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
@@ -13,39 +12,52 @@
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 </head>
-
 <body>
     <header>
-        <h1 class="sr-only">Messages Page</h1>
-        <!-- Optionally, add a top bar or additional navigation here -->
+        <h1 class="sr-only">Messages Management</h1>
     </header>
 
-  
-    <%- include('partials/sidebar') %> 
+    <%- include('partials/sidebar') %>
 
-    
     <main class="main-content">
         <section>
             <h1>Messages</h1>
             <p>Manage your messages here.</p>
-            <!-- Example form to add a new message -->
-            <form id="message-form" action="/messages" method="POST">
+
+            <!-- Alert for success or error messages -->
+            <% if (msg.success) { %>
+                <div class="alert alert-success"><%= msg.success %></div>
+            <% } %>
+            <% if (msg.error) { %>
+                <div class="alert alert-danger"><%= msg.error %></div>
+            <% } %>
+
+            <!-- Form to add a new message -->
+            <form id="message-form" action="/messages/add" method="POST">
                 <label for="message">New Message:</label>
-                <textarea id="message" name="message" required></textarea>
+                <textarea id="message" name="content" required></textarea>
                 <button type="submit">Send</button>
             </form>
-            <div id="message-list">
-                <!-- Messages will be dynamically injected here -->
-            </div>
+
+            <!-- Displaying message list -->
+            <h2>Message List</h2>
+            <ul id="message-list">
+                <% messages.forEach(message => { %>
+                    <li>
+                        <%= message.content %> - <%= message.timestamp.toISOString() %>
+                    </li>
+                <% }); %>
+            </ul>
         </section>
     </main>
+
     <!-- Scripts -->
     <script src="/static/js/sidebar-toggle.js"></script>
     <!-- Update the year dynamically in footer -->
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
-    <!-- Optionally add AJAX script for dynamic content loading -->
+    <!-- AJAX script for dynamic content loading -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             fetch('/api/messages')
@@ -62,5 +74,4 @@
         });
     </script>
 </body>
-
 </html>
