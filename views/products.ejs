@@ -12,6 +12,14 @@
     <div class="main-content">
         <h1>Products Management</h1>
 
+        <!-- Display flash messages -->
+        <% if (messages && messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+        <% if (messages && messages.error) { %>
+            <div class="alert alert-error"><%= messages.error %></div>
+        <% } %>
+
         <!-- Form to add a new product -->
         <form id="addProductForm" method="POST" action="/products/add" enctype="multipart/form-data">
             <h2>Add New Product</h2>
@@ -52,37 +60,17 @@
                                     <img src="<%= product.imageUrl %>" alt="<%= product.name %>" style="width: 50px; height: auto;">
                                 </td>
                                 <td>
-                                    <button class="edit-btn" onclick="openEditModal('<%= product._id %>', '<%= product.name %>', <%= product.price %>, '<%= product.category %>', '<%= product.imageUrl %>')">Edit</button>
-                                    <button class="delete-btn" onclick="confirmDelete('<%= product._id %>')">Delete</button>
+                                    <button class="edit-btn">Edit</button>
+                                    <button class="delete-btn">Delete</button>
                                 </td>
                             </tr>
-                        <% }) %>
+                        <% }); %>
                     <% } %>
                 </tbody>
             </table>
         </div>
-
-        <!-- Edit Product Modal -->
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeEditModal()">&times;</span>
-                <h2>Edit Product</h2>
-                <form id="editProductForm" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" id="editProductId" name="productId">
-                    <input type="text" id="editProductName" name="productName" placeholder="Product Name" required>
-                    <input type="number" id="editProductPrice" name="productPrice" placeholder="Price" required step="0.01">
-                    <input type="text" id="editProductCategory" name="productCategory" placeholder="Category" required>
-                    <input type="file" id="editProductImage" name="productImage" accept="image/*">
-                    <button type="submit">Update Product</button>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="/static/js/sidebar-toggle.js"></script>
-    <script src="/static/js/products.js"></script>
-    <script>
-        // Your existing JavaScript functions for editing and deleting
-    </script>
 </body>
 </html>
