@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Products Management</title>
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
@@ -12,15 +12,17 @@
     <div class="main-content">
         <h1>Products Management</h1>
 
-        <form id="addProductForm" method="POST" action="/products/add">
+        <!-- Form to add a new product -->
+        <form id="addProductForm" method="POST" action="/products/add" enctype="multipart/form-data">
             <h2>Add New Product</h2>
             <input type="text" name="productName" placeholder="Product Name" required>
             <input type="number" name="productPrice" placeholder="Price" required step="0.01">
             <input type="text" name="productCategory" placeholder="Category" required>
-            <input type="text" name="productImage" placeholder="Image URL" required>
+            <input type="file" name="productImage" accept="image/*" required>
             <button type="submit">Add Product</button>
         </form>
 
+        <!-- Product list -->
         <div class="product-list">
             <h2>Product List</h2>
             <table class="product-table">
@@ -59,14 +61,26 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Edit Product Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Product</h2>
+                <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="editProductId" name="productId">
+                    <input type="text" id="editProductName" name="productName" placeholder="Product Name" required>
+                    <input type="number" id="editProductPrice" name="productPrice" placeholder="Price" required step="0.01">
+                    <input type="text" id="editProductCategory" name="productCategory" placeholder="Category" required>
+                    <input type="file" id="editProductImage" name="productImage" accept="image/*">
+                    <button type="submit">Update Product</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="/static/js/sidebar-toggle.js"></script>
     <script src="/static/js/products.js"></script>
-</body>
-</html>
-
-
     <script>
         function confirmDelete(productId) {
             if (confirm('Are you sure you want to delete this product?')) {
@@ -83,7 +97,7 @@
             }
         }
 
-        function openEditModal(id, name, price, category) {
+        function openEditModal(id, name, price, category, imageUrl) {
             document.getElementById('editProductId').value = id;
             document.getElementById('editProductName').value = name;
             document.getElementById('editProductPrice').value = price;
@@ -101,6 +115,25 @@
             if (event.target == modal) {
                 closeEditModal();
             }
+        };
+
+        // Handle edit form submission
+        document.getElementById('editProductForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const productId = document.getElementById('editProductId').value;
+            const formData = new FormData(document.getElementById('editProductForm'));
+
+            fetch(`/products/${productId}`, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Failed to update the product.');
+                }
+            });
         };
     </script>
 </body>
