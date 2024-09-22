@@ -13,10 +13,15 @@
     <div class="main-content">
         <h1>Users Management</h1>
 
-        <% if (messages && messages.success && messages.success.length) { %>
+        <% 
+            // Initialize messages variable if not defined
+            var messages = typeof messages !== 'undefined' ? messages : {}; 
+        %>
+        
+        <% if (messages.success && messages.success.length) { %>
             <div class="alert alert-success"><%= messages.success %></div>
         <% } %>
-        <% if (messages && messages.error && messages.error.length) { %>
+        <% if (messages.error && messages.error.length) { %>
             <div class="alert alert-error"><%= messages.error %></div>
         <% } %>
 
